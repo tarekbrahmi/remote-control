@@ -10,7 +10,7 @@ import android.widget.TextView;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class Control extends AppCompatActivity {
-    LinearLayout mainlinearLayout;//(id) main_ll
+    LinearLayout mainlinearLayout;
     JoystickView joystick;
     TextView txt_angle_value,txt_strength_value;
 
