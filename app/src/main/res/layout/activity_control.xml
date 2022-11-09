@@ -21,17 +21,76 @@
             android:textColor="#213240"
             android:textSize="30sp"
             android:textStyle="normal" />
-        <io.github.controlwear.virtual.joystick.android.JoystickView
-            xmlns:custom="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:JV_buttonColor="#10100F"
-            custom:JV_buttonSizeRatio="15%"
-            custom:JV_borderColor="#3C4342"
-            custom:JV_backgroundColor="#00BCD4"
-            custom:JV_borderWidth="4dp"
-            custom:JV_fixedCenter="false"
-            />
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+            <io.github.controlwear.virtual.joystick.android.JoystickView
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/joystickView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:JV_buttonColor="#10100F"
+                custom:JV_buttonSizeRatio="15%"
+                custom:JV_borderColor="#3C4342"
+                custom:JV_backgroundColor="#00BCD4"
+                custom:JV_borderWidth="4dp"
+                custom:JV_fixedCenter="false"
+                />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ll_angle"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="angle (en °) : "
+                    android:textSize="20dp"
+                    />
+                <TextView
+                    android:id="@+id/txt_angle_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="20dp"
+                    />
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/ll_strength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="strength (en %) : "
+                        android:textSize="20dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_strength_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="value"
+                        android:textSize="20dp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
