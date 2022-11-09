@@ -25,7 +25,7 @@ SECRET_KEY = 'r$(06)699ww2pmu5s9to-a84z8_09od5t^ke(#nr3!n)f^zr(6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "channels",
+    "WS_RemoteControl.ws_app"
 ]
 
 MIDDLEWARE = [
@@ -68,7 +70,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'WS_RemoteControl.wsgi.application'
-
+# the asgi app
+ASGI_APPLICATION = 'WS_RemoteControl.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -118,3 +121,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
