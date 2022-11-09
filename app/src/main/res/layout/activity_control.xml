@@ -5,5 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Control">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/txt_joystick"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txt_welcome"
+            android:gravity="center"
+            android:text="Control With JoyStick"
+            android:textColor="#213240"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+        <io.github.controlwear.virtual.joystick.android.JoystickView
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:JV_buttonColor="#10100F"
+            custom:JV_buttonSizeRatio="15%"
+            custom:JV_borderColor="#3C4342"
+            custom:JV_backgroundColor="#00BCD4"
+            custom:JV_borderWidth="4dp"
+            custom:JV_fixedCenter="false"
+            />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
