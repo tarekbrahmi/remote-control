@@ -22,9 +22,9 @@
             android:textSize="30sp"
             android:textStyle="normal" />
         <LinearLayout
+            android:id="@+id/main_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:gravity="center"
             >
