@@ -54,7 +54,17 @@
             android:textColor="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="normal" />
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_slug"
+        android:gravity="center"
+        android:text="Start"
+        android:layout_marginLeft="133px"
+        android:layout_marginRight="133px"
 
+        />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
