@@ -18,11 +18,12 @@
             android:layout_below="@+id/txt_welcome"
             android:gravity="center"
             android:text="Control With JoyStick"
-            android:textColor="#213240"
+            android:textColor="#000305"
             android:textSize="30sp"
             android:textStyle="normal" />
         <LinearLayout
             android:id="@+id/main_ll"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -78,11 +79,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="strength (en %) : "
+                        android:text="decision : "
                         android:textSize="20dp"
                         />
                     <TextView
-                        android:id="@+id/txt_strength_value"
+                        android:id="@+id/txt_decision_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="value"
