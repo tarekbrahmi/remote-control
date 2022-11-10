@@ -14,8 +14,8 @@ public class Starting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting);
-        WsServerButton=(Button)findViewById(R.id.btn_ws_server);
-        PairDeviceButton=(Button)findViewById(R.id.btn_pair_device);
+        WsServerButton=(Button)findViewById(R.id.btn_ws_server);// control via WS server
+        PairDeviceButton=(Button)findViewById(R.id.btn_pair_device);// list all paired device
         WsServerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
