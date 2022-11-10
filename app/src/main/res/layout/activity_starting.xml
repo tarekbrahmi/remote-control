@@ -54,17 +54,31 @@
             android:textColor="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="normal" />
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_slug"
-        android:gravity="center"
-        android:text="Start"
-        android:layout_marginLeft="133px"
-        android:layout_marginRight="133px"
+        <LinearLayout
+            android:layout_below="@+id/txt_slug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_pair_device"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Pair Device"
+                android:layout_marginLeft="133px"
+                android:layout_marginRight="133px"
+                />
+            <Button
+                android:id="@+id/btn_ws_server"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Use WS Server"
+                android:layout_marginLeft="133px"
+                android:layout_marginRight="133px"
 
-        />
+                />
+        </LinearLayout>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
