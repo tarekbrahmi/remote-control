@@ -23,8 +23,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_devices_list"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="56px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/ll_devices"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

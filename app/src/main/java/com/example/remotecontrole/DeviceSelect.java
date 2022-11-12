@@ -12,7 +12,10 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,10 +30,9 @@ import java.util.List;
 import java.util.Set;
 
 public class DeviceSelect extends AppCompatActivity {
-
+    List<Object> deviceList = new ArrayList<>();
     private  final  int REQUEST_ENABLE_BT=0 ;
     BluetoothAdapter bluetoothAdapter;
-
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +59,9 @@ public class DeviceSelect extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+
         // Get List of Paired Bluetooth Device
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        List<Object> deviceList = new ArrayList<>();
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
             for (BluetoothDevice device : pairedDevices) {
@@ -74,7 +76,8 @@ public class DeviceSelect extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             DeviceListAdapter deviceListAdapter = new DeviceListAdapter(this,deviceList);
             recyclerView.setAdapter(deviceListAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            deviceListAdapter.notifyDataSetChanged();
+
         } else {
             View view = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
             Snackbar snackbar = Snackbar.make(view, "Activate Bluetooth or pair a Bluetooth device", Snackbar.LENGTH_INDEFINITE);
