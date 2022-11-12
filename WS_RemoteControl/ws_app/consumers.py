@@ -1,5 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-
+import json
 
 class CommandConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -9,3 +9,16 @@ class CommandConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add("Command_", self.channel_name)
 
         await self.accept()
+        await self.channel_layer.group_send("Command_", {
+                "type": "send_message",
+                "data": "Hello from server"
+            })
+
+    async def send_message(self, event):
+        await self.send(
+            text_data = json.dumps({
+                'data': event['data']
+            }))
+    async def receive(self, text_data):
+        text_data_json=json.loads(text_data)
+        print("Received data : ", text_data_json)

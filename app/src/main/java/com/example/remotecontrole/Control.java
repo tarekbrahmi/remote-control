@@ -15,12 +15,22 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 public class Control extends AppCompatActivity {
     LinearLayout mainlinearLayout;
@@ -34,6 +44,9 @@ public class Control extends AppCompatActivity {
     public static CreateConnectThread createConnectThread;
     private final static int CONNECTING_STATUS = 1;
     private final static int MESSAGE_READ = 2;
+    OkHttpClient client = new OkHttpClient.Builder()
+            .readTimeout(0,  TimeUnit.MILLISECONDS)
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +66,11 @@ public class Control extends AppCompatActivity {
             // portrait
             mainlinearLayout.setOrientation(LinearLayout.VERTICAL);
         }
-
+        Request request = new Request.Builder().url("ws://192.168.43.181:8000/command/").build();
+        Log.i("WS","request "+request);
+        EchoWebSocketListener listener = new EchoWebSocketListener();
+        WebSocket ws = this.client.newWebSocket(request, listener);
+        this.client.dispatcher().executorService().shutdown();
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
@@ -61,19 +78,25 @@ public class Control extends AppCompatActivity {
                 // define actions
                 if (strength>60&&(angle<=100 && angle>=80)){
                     // is up(90)  80<angle<100
+                    ws.send("{\"decision_\":\"UP\"}");
                     txt_decision_value.setText("UP");
                 }else if(strength>60&&(angle<=280 && angle>=260)){
                     // is down(270)  260<angle<280
+                    ws.send("{\"decision_\":\"DOWN\"}");
                     txt_decision_value.setText("DOWN");
                 }else if(strength>60&&(angle>0 && angle<=10)){
                     // is right(0)  10<angle<350
+                    ws.send("{\"decision_\":\"RIGHT\"}");
                     txt_decision_value.setText("RIGHT");
                 }else if(strength>60&&(angle>=350 && angle<360)){
+                    ws.send("{\"decision_\":\"RIGHT\"}");
                     txt_decision_value.setText("RIGHT");
                 }else if(strength>60&&(angle<=190 && angle>=170)){
                     // is left(180)  170<angle<190
+                    ws.send("{\"decision_\":\"LEFT\"}");
                     txt_decision_value.setText("LEFT");
                 }else if((angle==0&&strength==0)){
+                    ws.send("{\"decision_\":\"IDLE\"}");
                     txt_decision_value.setText("IDLE");
                 }
 
@@ -90,6 +113,7 @@ public class Control extends AppCompatActivity {
         }else{
             Log.i("INFO","Failed to get device name " + deviceName);
         }
+
         handler = new Handler(Looper.getMainLooper()) {
             @SuppressLint("SetTextI18n")
             @Override
@@ -110,6 +134,56 @@ public class Control extends AppCompatActivity {
             }
         };
     }
+    /* ============================ WS control =================================== */
+    class EchoWebSocketListener extends WebSocketListener {
+        private static final int NORMAL_CLOSURE_STATUS = 1000;
+
+        @Override
+        public void onOpen(WebSocket webSocket, Response response) {
+            Log.d("WS", "onOpen() is called.");
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("message" , "Hello");
+            } catch (JSONException e) {
+                Log.e("WSE",e.toString());
+            }
+            webSocket.send(obj.toString());
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            Log.d("WS", "onMessage() for String is called.");
+            output("Receiving : " + text);
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, ByteString bytes) {
+            Log.d("WS", "onMessage() for ByteString is called.");
+            output("Receiving bytes : " + bytes.hex());
+        }
+
+        @Override
+        public void onClosing(WebSocket webSocket, int code, String reason) {
+            Log.d("WS", "onClosing() is called.");
+            webSocket.close(NORMAL_CLOSURE_STATUS, null);
+            output("Closing : " + code + " / " + reason);
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            Log.d("WS", "onFailure() is called.");
+            output("Error : " + t.getMessage());
+        }
+    }
+    void output(String txt) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("WSS",txt);
+            }
+        });
+    }
+
     /* ============================ Thread to Create Bluetooth Connection =================================== */
     public static class CreateConnectThread extends Thread {
         String TAG ="INFO";
