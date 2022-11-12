@@ -90,6 +90,7 @@ public class WSControl extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,int id) {
                                 dialog.cancel();
                                 Intent intent = new Intent(getApplicationContext(), Starting.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }
                         });
