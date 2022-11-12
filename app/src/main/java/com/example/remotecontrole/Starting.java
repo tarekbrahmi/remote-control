@@ -23,6 +23,12 @@ public class Starting extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        PairDeviceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), DeviceSelect.class);
+                startActivity(intent);
+            }
+        });
     }
 }
