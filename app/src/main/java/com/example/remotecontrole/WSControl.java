@@ -1,5 +1,4 @@
 package com.example.remotecontrole;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,17 +11,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -76,7 +69,6 @@ public class WSControl extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,int id) {
                                 serverIp=ipServerET.getText().toString();
                                 Request request = new Request.Builder().url("ws://"+serverIp+":8000/command/").build();
-                                Log.i("WS","request from address "+serverIp);
                                 EchoWebSocketListener listener = new EchoWebSocketListener();
                                 webSocket = client.newWebSocket(request, listener);
                                 client.dispatcher().executorService().shutdown();
@@ -134,6 +126,7 @@ public class WSControl extends AppCompatActivity {
         public void onOpen(WebSocket webSocket, Response response) {
             Log.d("WS", "onOpen() is called.");
             JSONObject obj = new JSONObject();
+            output("Connecting to address "+serverIp);
             try {
                 obj.put("message" , "Hello");
             } catch (JSONException e) {
@@ -171,7 +164,7 @@ public class WSControl extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.i("WSS",txt);
+                Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG).show();
             }
         });
     }
