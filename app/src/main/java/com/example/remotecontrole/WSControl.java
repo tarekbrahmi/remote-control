@@ -1,5 +1,8 @@
 package com.example.remotecontrole;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,8 +52,13 @@ public class WSControl extends AppCompatActivity {
         joystick = (JoystickView) findViewById(R.id.joystickView);
         txt_angle_value=(TextView)findViewById(R.id.txt_angle_value);
         txt_decision_value=(TextView)findViewById(R.id.txt_decision_value);
+        btn_stop=(Button)findViewById(R.id.btn_stop);
+        btn_start=(Button)findViewById(R.id.btn_start);
+        rs_vitess=(RangeSlider)findViewById(R.id.rs_vitess);
+
         txt_angle_value.setText(String.valueOf(0));
-        txt_decision_value.setText(String.valueOf("IDLE"));
+        txt_decision_value.setText("IDLE");
+
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // landscape
             mainlinearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -58,6 +66,13 @@ public class WSControl extends AppCompatActivity {
             // portrait
             mainlinearLayout.setOrientation(LinearLayout.VERTICAL);
         }
+        rs_vitess.addOnChangeListener(new RangeSlider.OnChangeListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
+                Log.i("RS_VALUE",String.valueOf(value));
+            }
+        });
         //TODO make server ip address entered from an input
         LayoutInflater li = LayoutInflater.from(this);
         View ipServerPopup = li.inflate(R.layout.server_ip_popup, null);
