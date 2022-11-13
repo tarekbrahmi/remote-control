@@ -1,15 +1,11 @@
 package com.example.remotecontrole;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +15,12 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -59,12 +61,7 @@ public class WSControl extends AppCompatActivity {
             // portrait
             mainlinearLayout.setOrientation(LinearLayout.VERTICAL);
         }
-        WifiManager wifiMgr = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-        int ip = wifiInfo.getIpAddress();
-        String ipAddress = Formatter.formatIpAddress(ip);
-
-        //TODO make server ip address entred from an input
+        //TODO make server ip address entered from an input
         LayoutInflater li = LayoutInflater.from(this);
         View ipServerPopup = li.inflate(R.layout.server_ip_popup, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -79,7 +76,7 @@ public class WSControl extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,int id) {
                                 serverIp=ipServerET.getText().toString();
                                 Request request = new Request.Builder().url("ws://"+serverIp+":8000/command/").build();
-                                Log.i("WS","request from address "+ipAddress);
+                                Log.i("WS","request from address "+serverIp);
                                 EchoWebSocketListener listener = new EchoWebSocketListener();
                                 webSocket = client.newWebSocket(request, listener);
                                 client.dispatcher().executorService().shutdown();
@@ -178,4 +175,5 @@ public class WSControl extends AppCompatActivity {
             }
         });
     }
+
 }
