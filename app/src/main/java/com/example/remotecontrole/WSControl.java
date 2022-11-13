@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.slider.RangeSlider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +33,8 @@ public class WSControl extends AppCompatActivity {
     WebSocket webSocket;
     String serverIp="192.168.43.181";
     TextView txt_angle_value,txt_decision_value;
+    Button btn_start,btn_stop;
+    RangeSlider rs_vitess;
     private String deviceName = null;
 
     OkHttpClient client = new OkHttpClient.Builder()
@@ -40,13 +45,12 @@ public class WSControl extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
-
         mainlinearLayout = (LinearLayout) findViewById(R.id.main_ll);
         joystick = (JoystickView) findViewById(R.id.joystickView);
         txt_angle_value=(TextView)findViewById(R.id.txt_angle_value);
         txt_decision_value=(TextView)findViewById(R.id.txt_decision_value);
         txt_angle_value.setText(String.valueOf(0));
-        txt_decision_value.setText(String.valueOf(0));
+        txt_decision_value.setText(String.valueOf("IDLE"));
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // landscape
             mainlinearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -126,6 +130,7 @@ public class WSControl extends AppCompatActivity {
         public void onOpen(WebSocket webSocket, Response response) {
             Log.d("WS", "onOpen() is called.");
             JSONObject obj = new JSONObject();
+            joystick.setEnabled(true);
             output("Connecting to address "+serverIp);
             try {
                 obj.put("message" , "Hello");
@@ -157,6 +162,7 @@ public class WSControl extends AppCompatActivity {
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
             Log.d("WS", "onFailure() is called.");
+            joystick.setEnabled(false);
             output("Error : " + t.getMessage());
         }
     }
