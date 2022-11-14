@@ -2,6 +2,11 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
 class CommandConsumer(AsyncWebsocketConsumer):
+    """_summary_
+
+    Args:
+        AsyncWebsocketConsumer (_type_): _description_
+    """
     async def connect(self):
         self.group_name = "Command_"
         self.groups.append('Command_GROUP_')
