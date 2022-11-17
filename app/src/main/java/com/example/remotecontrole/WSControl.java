@@ -46,8 +46,6 @@ public class WSControl extends AppCompatActivity {
     String serverPort="8000";
     String Title="Control With JoyStick";
     TextView txt_vitess_value,txt_decision_value;
-    RangeSlider rs_vitess;
-    private String deviceName = null;
 
     OkHttpClient client = new OkHttpClient.Builder()
             .readTimeout(0,  TimeUnit.MILLISECONDS)
@@ -62,7 +60,6 @@ public class WSControl extends AppCompatActivity {
         joystick = (JoystickView) findViewById(R.id.joystickView);
         txt_vitess_value=(TextView)findViewById(R.id.txt_vitess_value);
         txt_decision_value=(TextView)findViewById(R.id.txt_decision_value);
-        rs_vitess=(RangeSlider)findViewById(R.id.rs_vitess);
 
         txt_vitess_value.setText(String.valueOf(0));
         txt_decision_value.setText("IDLE");
@@ -74,13 +71,6 @@ public class WSControl extends AppCompatActivity {
             // portrait
             mainlinearLayout.setOrientation(LinearLayout.VERTICAL);
         }
-        rs_vitess.addOnChangeListener(new RangeSlider.OnChangeListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
-                txt_vitess_value.setText(String.valueOf(value));
-            }
-        });
         Handler handler = new Handler(new Handler.Callback() {
 
             @Override
@@ -143,27 +133,24 @@ public class WSControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
-                //TODO add vitesse
-                List<Float> vitesss=rs_vitess.getValues();
-
-                if (vitesss.get(0)!=0.0&&strength>60&&(angle<=100 && angle>=80)){
+                if (strength>60&&(angle<=100 && angle>=80)){
                     // is up(90)  80<angle<100
-                    webSocket.send("{\"decision\":\"FORWARD\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
+                    webSocket.send("{\"decision\":\"FORWARD\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("FORWARD");
-                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle<=280 && angle>=260)){
+                }else if(strength>60&&(angle<=280 && angle>=260)){
                     // is down(270)  260<angle<280
-                    webSocket.send("{\"decision\":\"BACKWARD\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
+                    webSocket.send("{\"decision\":\"BACKWARD\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("BACKWARD");
-                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle>0 && angle<=10)){
+                }else if(strength>60&&(angle>0 && angle<=10)){
                     // is right(0)  10<angle<350
-                    webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
+                    webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("RIGHT");
-                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle>=350 && angle<360)){
-                    webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
+                }else if(strength>60&&(angle>=350 && angle<360)){
+                    webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("RIGHT");
-                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle<=190 && angle>=170)){
+                }else if(strength>60&&(angle<=190 && angle>=170)){
                     // is left(180)  170<angle<190
-                    webSocket.send("{\"decision\":\"LEFT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
+                    webSocket.send("{\"decision\":\"LEFT\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("LEFT");
                 }else if((angle==0&&strength==0)){
                     webSocket.send("{\"decision\":\"IDLE\"}");
@@ -176,16 +163,12 @@ public class WSControl extends AppCompatActivity {
     class EchoWebSocketListener extends WebSocketListener {
         private static final int NORMAL_CLOSURE_STATUS = 1000;
         Handler handler;
-
         public EchoWebSocketListener(Handler handler) {
             this.handler=handler;
         }
-
         public synchronized void setState(int state) {
             handler.obtainMessage(MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
         }
-
-
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
             Log.d("WS", "onOpen() is called.");
@@ -221,7 +204,6 @@ public class WSControl extends AppCompatActivity {
             joystick.setEnabled(false);
             output("Closing : " + code + " / " + reason);
         }
-
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
             setState(3);// failed to connect
@@ -238,7 +220,6 @@ public class WSControl extends AppCompatActivity {
             }
         });
     }
-
     void setState(CharSequence subTitle) {
         getSupportActionBar().setSubtitle(subTitle);
     }
