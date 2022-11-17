@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.remotecontrole.BluetoothControl;
-import com.example.remotecontrole.WSControl;
 import com.example.remotecontrole.R;
 
 import java.util.List;

@@ -1,8 +1,5 @@
 package com.example.remotecontrole;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,13 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.slider.RangeSlider;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

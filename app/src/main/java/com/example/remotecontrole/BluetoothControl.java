@@ -1,20 +1,17 @@
 package com.example.remotecontrole;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.res.Configuration;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,8 +19,6 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
-import okhttp3.Request;
-import okhttp3.WebSocket;
 
 public class BluetoothControl extends AppCompatActivity {
     LinearLayout mainlinearLayout;
