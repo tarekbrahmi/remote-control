@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            >
+            tools:ignore="UselessParent">
             <io.github.controlwear.virtual.joystick.android.JoystickView
                 xmlns:custom="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/joystickView"
@@ -47,15 +47,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vitess (en %) : "
-                    android:textSize="20dp"
+                    android:text="@string/vitess_en"
+                    android:textSize="20sp"
                     />
                 <TextView
                     android:id="@+id/txt_vitess_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="20dp"
+                    android:text="@string/value"
+                    android:textSize="20sp"
                     />
             </LinearLayout>
                 <LinearLayout
@@ -68,15 +68,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="decision : "
-                        android:textSize="20dp"
+                        android:text="@string/decision"
+                        android:textSize="20sp"
                         />
                     <TextView
                         android:id="@+id/txt_decision_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="value"
-                        android:textSize="20dp"
+                        android:text="@string/value"
+                        android:textSize="20sp"
                         />
                 </LinearLayout>
                 <RelativeLayout

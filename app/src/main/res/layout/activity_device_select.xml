@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/ll_devices"
         android:layout_width="match_parent"
-        android:layout_height="55px"
+        android:layout_height="55dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,13 +17,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All Paired devices"
+            android:text="@string/all_paired_devices"
             android:textColor="@color/black" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_devices_list"
-        android:layout_marginTop="56px"
+        android:layout_marginTop="56dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/ll_devices"

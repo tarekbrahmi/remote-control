@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RemoteControle</string>
+    <string name="vitess_en">Vitess (en %) :</string>
+    <string name="decision">decision :</string>
+    <string name="value">value</string>
+    <string name="angle_en">angle (en °) :</string>
+    <string name="all_paired_devices">All Paired devices</string>
+    <string name="welcome">Welcome</string>
 </resources>
