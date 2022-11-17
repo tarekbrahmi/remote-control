@@ -47,11 +47,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="angle (en °) : "
+                    android:text="Vitess (en %) : "
                     android:textSize="20dp"
                     />
                 <TextView
-                    android:id="@+id/txt_angle_value"
+                    android:id="@+id/txt_vitess_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="value"

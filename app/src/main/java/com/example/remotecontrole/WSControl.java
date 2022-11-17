@@ -23,6 +23,8 @@ import com.google.android.material.slider.RangeSlider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import okhttp3.OkHttpClient;
@@ -44,8 +46,7 @@ public class WSControl extends AppCompatActivity {
     String serverIp="192.168.43.181";
     String serverPort="8000";
     String Title="Control With JoyStick";
-    int State=0;// Not connected
-    TextView txt_angle_value,txt_decision_value;
+    TextView txt_vitess_value,txt_decision_value;
     Button btn_start,btn_stop;
     RangeSlider rs_vitess;
     private String deviceName = null;
@@ -61,13 +62,13 @@ public class WSControl extends AppCompatActivity {
         getSupportActionBar().setTitle(Title);
         mainlinearLayout = (LinearLayout) findViewById(R.id.main_ll);
         joystick = (JoystickView) findViewById(R.id.joystickView);
-        txt_angle_value=(TextView)findViewById(R.id.txt_angle_value);
+        txt_vitess_value=(TextView)findViewById(R.id.txt_vitess_value);
         txt_decision_value=(TextView)findViewById(R.id.txt_decision_value);
         btn_stop=(Button)findViewById(R.id.btn_stop);
         btn_start=(Button)findViewById(R.id.btn_start);
         rs_vitess=(RangeSlider)findViewById(R.id.rs_vitess);
 
-        txt_angle_value.setText(String.valueOf(0));
+        txt_vitess_value.setText(String.valueOf(0));
         txt_decision_value.setText("IDLE");
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -81,7 +82,7 @@ public class WSControl extends AppCompatActivity {
             @SuppressLint("RestrictedApi")
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
-                Log.i("RS_VALUE",String.valueOf(value));
+                txt_vitess_value.setText(String.valueOf(value));
             }
         });
         Handler handler = new Handler(new Handler.Callback() {
@@ -147,29 +148,30 @@ public class WSControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
-                txt_angle_value.setText(String.valueOf(angle));
-                // define actions
+                //TODO add vitesse
+                List<Float> vitesss=rs_vitess.getValues();
+
                 if (strength>60&&(angle<=100 && angle>=80)){
                     // is up(90)  80<angle<100
-                    webSocket.send("{\"decision_\":\"FORWARD\"}");
+                    webSocket.send("{\"decision\":\"FORWARD\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("FORWARD");
                 }else if(strength>60&&(angle<=280 && angle>=260)){
                     // is down(270)  260<angle<280
-                    webSocket.send("{\"decision_\":\"BACKWARD\"}");
+                    webSocket.send("{\"decision\":\"BACKWARD\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("BACKWARD");
                 }else if(strength>60&&(angle>0 && angle<=10)){
                     // is right(0)  10<angle<350
-                    webSocket.send("{\"decision_\":\"RIGHT\"}");
+                    webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("RIGHT");
                 }else if(strength>60&&(angle>=350 && angle<360)){
-                    webSocket.send("{\"decision_\":\"RIGHT\"}");
+                    webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("RIGHT");
                 }else if(strength>60&&(angle<=190 && angle>=170)){
                     // is left(180)  170<angle<190
-                    webSocket.send("{\"decision_\":\"LEFT\"}");
+                    webSocket.send("{\"decision\":\"LEFT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("LEFT");
                 }else if((angle==0&&strength==0)){
-                    webSocket.send("{\"decision_\":\"IDLE\"}");
+                    webSocket.send("{\"decision\":\"IDLE\"}");
                     txt_decision_value.setText("IDLE");
                 }
 
