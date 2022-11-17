@@ -13,7 +13,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,7 +46,6 @@ public class WSControl extends AppCompatActivity {
     String serverPort="8000";
     String Title="Control With JoyStick";
     TextView txt_vitess_value,txt_decision_value;
-    Button btn_start,btn_stop;
     RangeSlider rs_vitess;
     private String deviceName = null;
 
@@ -64,8 +62,6 @@ public class WSControl extends AppCompatActivity {
         joystick = (JoystickView) findViewById(R.id.joystickView);
         txt_vitess_value=(TextView)findViewById(R.id.txt_vitess_value);
         txt_decision_value=(TextView)findViewById(R.id.txt_decision_value);
-        btn_stop=(Button)findViewById(R.id.btn_stop);
-        btn_start=(Button)findViewById(R.id.btn_start);
         rs_vitess=(RangeSlider)findViewById(R.id.rs_vitess);
 
         txt_vitess_value.setText(String.valueOf(0));
@@ -144,29 +140,28 @@ public class WSControl extends AppCompatActivity {
                         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
                 //TODO add vitesse
                 List<Float> vitesss=rs_vitess.getValues();
 
-                if (strength>60&&(angle<=100 && angle>=80)){
+                if (vitesss.get(0)!=0.0&&strength>60&&(angle<=100 && angle>=80)){
                     // is up(90)  80<angle<100
                     webSocket.send("{\"decision\":\"FORWARD\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("FORWARD");
-                }else if(strength>60&&(angle<=280 && angle>=260)){
+                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle<=280 && angle>=260)){
                     // is down(270)  260<angle<280
                     webSocket.send("{\"decision\":\"BACKWARD\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("BACKWARD");
-                }else if(strength>60&&(angle>0 && angle<=10)){
+                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle>0 && angle<=10)){
                     // is right(0)  10<angle<350
                     webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("RIGHT");
-                }else if(strength>60&&(angle>=350 && angle<360)){
+                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle>=350 && angle<360)){
                     webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("RIGHT");
-                }else if(strength>60&&(angle<=190 && angle>=170)){
+                }else if(vitesss.get(0)!=0.0&&strength>60&&(angle<=190 && angle>=170)){
                     // is left(180)  170<angle<190
                     webSocket.send("{\"decision\":\"LEFT\",\"vitess\":"+String.valueOf(vitesss.get(0))+"}");
                     txt_decision_value.setText("LEFT");
@@ -174,7 +169,6 @@ public class WSControl extends AppCompatActivity {
                     webSocket.send("{\"decision\":\"IDLE\"}");
                     txt_decision_value.setText("IDLE");
                 }
-
             }
         });
     }
