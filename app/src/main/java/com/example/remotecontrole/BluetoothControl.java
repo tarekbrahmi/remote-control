@@ -38,11 +38,13 @@ public class BluetoothControl extends AppCompatActivity {
     public static CreateConnectThread createConnectThread;
     private final static int CONNECTING_STATUS = 1;
     private final static int MESSAGE_READ = 2;
+    String Title="Control With JoyStick";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_control);
+        getSupportActionBar().setTitle(Title);
         mainlinearLayout = (LinearLayout) findViewById(R.id.main_ll);
         joystick = (JoystickView) findViewById(R.id.joystickView);
         txt_angle_value=(TextView)findViewById(R.id.txt_angle_value);

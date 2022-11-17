@@ -32,12 +32,14 @@ import java.util.Set;
 public class DeviceSelect extends AppCompatActivity {
     List<Object> deviceList = new ArrayList<>();
     private  final  int REQUEST_ENABLE_BT=0 ;
+    String Title="Select Device";
     BluetoothAdapter bluetoothAdapter;
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_select);
+        getSupportActionBar().setTitle(Title);
         // Bluetooth Setup
         BluetoothManager bluetoothManager = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
