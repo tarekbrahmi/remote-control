@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,15 @@ public class WSControl extends AppCompatActivity {
     LinearLayout mainlinearLayout;
     JoystickView joystick;
     WebSocket webSocket;
+    public static final int MESSAGE_STATE_CHANGED=-1;
+    public static final int NOT_CONNECTED = 0;
+    public static final int CONNECTED = 1;
+    public static final int CLOSED = 2;
+    public static final int FAILED = 3;
     String serverIp="192.168.43.181";
+    String serverPort="8000";
+    String Title="Control With JoyStick";
+    int State=0;// Not connected
     TextView txt_angle_value,txt_decision_value;
     Button btn_start,btn_stop;
     RangeSlider rs_vitess;
@@ -48,6 +58,7 @@ public class WSControl extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
+        getSupportActionBar().setTitle(Title);
         mainlinearLayout = (LinearLayout) findViewById(R.id.main_ll);
         joystick = (JoystickView) findViewById(R.id.joystickView);
         txt_angle_value=(TextView)findViewById(R.id.txt_angle_value);
@@ -73,6 +84,33 @@ public class WSControl extends AppCompatActivity {
                 Log.i("RS_VALUE",String.valueOf(value));
             }
         });
+        Handler handler = new Handler(new Handler.Callback() {
+
+            @Override
+            public boolean handleMessage(@NonNull Message message) {
+                switch (message.what) {
+                    case MESSAGE_STATE_CHANGED:
+                        switch (message.arg1) {
+                            case NOT_CONNECTED:
+                                setState("Not Connected");
+                                break;
+                            case CONNECTED:
+                                setState("Connected to : "+serverIp);
+                                break;
+                            case CLOSED:
+                                setState("Connection Closed");
+                                break;
+                            case FAILED:
+                                setState("Failed to connect");
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         //TODO make server ip address entered from an input
         LayoutInflater li = LayoutInflater.from(this);
         View ipServerPopup = li.inflate(R.layout.server_ip_popup, null);
@@ -86,9 +124,10 @@ public class WSControl extends AppCompatActivity {
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
+                                setState("Connecting...");
                                 serverIp=ipServerET.getText().toString();
-                                Request request = new Request.Builder().url("ws://"+serverIp+":8000/command/").build();
-                                EchoWebSocketListener listener = new EchoWebSocketListener();
+                                Request request = new Request.Builder().url("ws://"+serverIp+":"+serverPort+"/command/").build();
+                                EchoWebSocketListener listener = new EchoWebSocketListener(handler);
                                 webSocket = client.newWebSocket(request, listener);
                                 client.dispatcher().executorService().shutdown();
                             }
@@ -140,6 +179,16 @@ public class WSControl extends AppCompatActivity {
     /* ============================ WS control =================================== */
     class EchoWebSocketListener extends WebSocketListener {
         private static final int NORMAL_CLOSURE_STATUS = 1000;
+        Handler handler;
+
+        public EchoWebSocketListener(Handler handler) {
+            this.handler=handler;
+        }
+
+        public synchronized void setState(int state) {
+            handler.obtainMessage(MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
+        }
+
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
@@ -148,6 +197,7 @@ public class WSControl extends AppCompatActivity {
             joystick.setEnabled(true);
             output("Connecting to address "+serverIp);
             try {
+                setState(1);// connected
                 obj.put("message" , "Hello");
             } catch (JSONException e) {
                 Log.e("WSE",e.toString());
@@ -170,12 +220,15 @@ public class WSControl extends AppCompatActivity {
         @Override
         public void onClosing(WebSocket webSocket, int code, String reason) {
             Log.d("WS", "onClosing() is called.");
+            setState(2);// closed
             webSocket.close(NORMAL_CLOSURE_STATUS, null);
+            joystick.setEnabled(false);
             output("Closing : " + code + " / " + reason);
         }
 
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            setState(3);// failed to connect
             Log.d("WS", "onFailure() is called.");
             joystick.setEnabled(false);
             output("Error : " + t.getMessage());
@@ -188,6 +241,10 @@ public class WSControl extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    void setState(CharSequence subTitle) {
+        getSupportActionBar().setSubtitle(subTitle);
     }
 
 }
