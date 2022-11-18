@@ -24,7 +24,6 @@ public class BluetoothControl extends AppCompatActivity {
     LinearLayout mainlinearLayout;
     JoystickView joystick;
     TextView txt_angle_value,txt_decision_value;
-
     private String deviceName = null;
     private String deviceAddress;
     public static Handler handler;
@@ -78,7 +77,6 @@ public class BluetoothControl extends AppCompatActivity {
 
             }
         });
-        // If a bluetooth device has been selected from SelectDeviceActivity
         deviceName = getIntent().getStringExtra("deviceName");
         if (deviceName != null){
             Log.i("INFO","Selected device is : " + deviceName);
@@ -90,7 +88,6 @@ public class BluetoothControl extends AppCompatActivity {
             Log.i("INFO","Failed to get device name " + deviceName);
         }
     }
-    /* ============================ Thread to Create Bluetooth Connection =================================== */
     public static class CreateConnectThread extends Thread {
         String TAG ="INFO";
         @SuppressLint("MissingPermission")
@@ -136,7 +133,7 @@ public class BluetoothControl extends AppCompatActivity {
             }
         }
     }
-    /* =============================== Thread for Data Transfer =========================================== */
+    
     public static class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -145,8 +142,6 @@ public class BluetoothControl extends AppCompatActivity {
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
-            // Get the input and output streams, using temp objects because
-            // member streams are final
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
@@ -156,15 +151,10 @@ public class BluetoothControl extends AppCompatActivity {
             mmOutStream = tmpOut;
         }
         public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes = 0; // bytes returned from read()
-            // Keep listening to the InputStream until an exception occurs
+            byte[] buffer = new byte[1024];
+            int bytes = 0;
             while (true) {
                 try {
-                    /*
-                    Read from the InputStream from Arduino until termination character is reached.
-                    Then send the whole String message to GUI Handler.
-                     */
                     buffer[bytes] = (byte) mmInStream.read();
                     String readMessage;
                     if (buffer[bytes] == '\n'){
@@ -181,16 +171,14 @@ public class BluetoothControl extends AppCompatActivity {
                 }
             }
         }
-        /* Call this from the main activity to send data to the remote device */
         public void write(String input) {
-            byte[] bytes = input.getBytes(); //converts entered String into bytes
+            byte[] bytes = input.getBytes();
             try {
                 mmOutStream.write(bytes);
             } catch (IOException e) {
                 Log.e("Send Error","Unable to send message",e);
             }
         }
-        /* Call this from the main activity to shutdown the connection */
         public void cancel() {
             try {
                 mmSocket.close();
