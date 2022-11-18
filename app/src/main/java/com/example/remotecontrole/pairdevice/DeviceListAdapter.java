@@ -43,15 +43,12 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final DeviceInformation deviceInfo = (DeviceInformation) deviceList.get(position);
         itemHolder.textName.setText(deviceInfo.getDeviceName());
         itemHolder.textAddress.setText(deviceInfo.getDeviceHardwareAddress());
-        // When a device is selected
         itemHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, BluetoothControl.class);
-                // Send device details to the MainActivity
                 intent.putExtra("deviceName", deviceInfo.getDeviceName());
                 intent.putExtra("deviceAddress",deviceInfo.getDeviceHardwareAddress());
-                // Call MainActivity
                 context.startActivity(intent);
             }
         });
