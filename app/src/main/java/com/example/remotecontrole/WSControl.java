@@ -1,6 +1,7 @@
 package com.example.remotecontrole;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -42,6 +43,7 @@ public class WSControl extends AppCompatActivity {
     public static final int FAILED = 3;
     String serverIp="192.168.43.181";
     String serverPort="8000";
+    Handler handler;
     String Title="Control With JoyStick";
     TextView txt_vitess_value,txt_decision_value;
 
@@ -69,7 +71,7 @@ public class WSControl extends AppCompatActivity {
             // portrait
             mainlinearLayout.setOrientation(LinearLayout.VERTICAL);
         }
-        Handler handler = new Handler(new Handler.Callback() {
+        handler = new Handler(new Handler.Callback() {
 
             @Override
             public boolean handleMessage(@NonNull Message message) {
@@ -96,38 +98,6 @@ public class WSControl extends AppCompatActivity {
                 return false;
             }
         });
-        //TODO make server ip address entered from an input
-        LayoutInflater li = LayoutInflater.from(this);
-        View ipServerPopup = li.inflate(R.layout.server_ip_popup, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setView(ipServerPopup);
-        EditText ipServerET = (EditText) ipServerPopup
-                .findViewById(R.id.etxt_server_ipaddress);
-        ipServerET.setText(serverIp);
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                setState("Connecting...");
-                                serverIp=ipServerET.getText().toString();
-                                Request request = new Request.Builder().url("ws://"+serverIp+":"+serverPort+"/command/").build();
-                                EchoWebSocketListener listener = new EchoWebSocketListener(handler);
-                                webSocket = client.newWebSocket(request, listener);
-                                client.dispatcher().executorService().shutdown();
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                                Intent intent = new Intent(getApplicationContext(), Starting.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
@@ -221,5 +191,58 @@ public class WSControl extends AppCompatActivity {
     void setState(CharSequence subTitle) {
         getSupportActionBar().setSubtitle(subTitle);
     }
+    void showIpPopUp(Context context,Handler handler){
+        LayoutInflater li = LayoutInflater.from(context);
+        View ipServerPopup = li.inflate(R.layout.server_ip_popup, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(ipServerPopup);
+        EditText ipServerET = (EditText) ipServerPopup
+                .findViewById(R.id.etxt_server_ipaddress);
+        ipServerET.setText(serverIp);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                setState("Connecting...");
+                                serverIp=ipServerET.getText().toString();
+                                Request request = new Request.Builder().url("ws://"+serverIp+":"+serverPort+"/command/").build();
+                                EchoWebSocketListener listener = new EchoWebSocketListener(handler);
+                                webSocket = client.newWebSocket(request, listener);
+                                client.dispatcher().executorService().shutdown();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                                Intent intent = new Intent(getApplicationContext(), Starting.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //TODO make server ip address entered from an input
+        Log.i("TAG","onResume");
+        if(webSocket==null){
+            Log.i("TAG","Called from onResume"+webSocket);
+            showIpPopUp(this,handler);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("TAG","onRestart");
+        if(webSocket==null){
+            Log.i("TAG","Called from onRestart"+webSocket);
+            showIpPopUp(this,handler);
+        }
+    }
 }
