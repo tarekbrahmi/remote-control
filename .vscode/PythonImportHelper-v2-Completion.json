@@ -165,6 +165,23 @@
         "documentation": {}
     },
     {
+        "label": "RPi.GPIO",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "RPi.GPIO",
+        "description": "RPi.GPIO",
+        "detail": "RPi.GPIO",
+        "documentation": {}
+    },
+    {
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
+        "isExtraImport": true,
+        "detail": "time",
+        "documentation": {}
+    },
+    {
         "label": "WsAppConfig",
         "kind": 6,
         "importPath": "WS_RemoteControl.ws_app.apps",
@@ -477,6 +494,24 @@
         "description": "manage",
         "peekOfCode": "def main():\n    \"\"\"Run administrative tasks.\"\"\"\n    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WS_RemoteControl.settings')\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise ImportError(\n            \"Couldn't import Django. Are you sure it's installed and \"\n            \"available on your PYTHONPATH environment variable? Did you \"\n            \"forget to activate a virtual environment?\"",
         "detail": "manage",
+        "documentation": {}
+    },
+    {
+        "label": "motor",
+        "kind": 6,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "class motor():\n    def __init__(self,Ena,In1,In2):\n        self.Ena = Ena\n        self.In1 = In1\n        self.In2 = In2\n        GPIO.setup(self.Ena,GPIO.OUT)\n        GPIO.setup(self.In1,GPIO.OUT)\n        GPIO.setup(self.In2,GPIO.OUT)\n        self.pwm = GPIO.PWM(self.Ena, 100)\n        self.pwm.start(0)",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "motor1",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "motor1 = motor(2,3,4)\nwhile True:\n    motor1.moveF(30,2)\n    motor1.stop(1)\n    motor1.moveB(t=2)\n    motor1.stop(1)\n    '''\n    for x in range(20,100):\n        motor1.moveF(x,0.05)\n        print(x)",
+        "detail": "test",
         "documentation": {}
     }
 ]
