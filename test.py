@@ -28,7 +28,8 @@ class motor():
         self.pwm.ChangeDutyCycle(0)
         sleep(t)
  
-motor1 = motor(2,3,4)
+motor1 = motor(25,24,23)
+motor2 = motor(17,27,22)
  
 while True:
     
@@ -36,6 +37,10 @@ while True:
     motor1.stop(1)
     motor1.moveB(t=2)
     motor1.stop(1)
+    motor2.moveF(30,2)
+    motor2.stop(1)
+    motor2.moveB(t=2)
+    motor2.stop(1)
      
     '''
     for x in range(20,100):
