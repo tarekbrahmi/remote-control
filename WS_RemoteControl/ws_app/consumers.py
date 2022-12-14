@@ -2,12 +2,11 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from time import sleep
 import RPi.GPIO as gpio
+import subprocess
 
 
 class PINS:
     ######## PINS ########
-    def __init__(self) -> None:
-        print("set up the GPIO")
     ENA = 0
     ENB = 0
     IN1 = 17
@@ -35,12 +34,13 @@ class CommandConsumer(AsyncWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        gpio.setmode(gpio.BCM)
+        # gpio.setmode(gpio.BCM)
 
-        gpio.setup(self.PINS.IN1, gpio.OUT)
-        gpio.setup(self.PINS.IN2, gpio.OUT)
-        gpio.setup(self.PINS.IN3, gpio.OUT)
-        gpio.setup(self.PINS.IN4, gpio.OUT)
+        # gpio.setup(self.PINS.IN1, gpio.OUT)
+        # gpio.setup(self.PINS.IN2, gpio.OUT)
+        # gpio.setup(self.PINS.IN3, gpio.OUT)
+        # gpio.setup(self.PINS.IN4, gpio.OUT)
+        print("set up the GPIO")
 
     async def connect(self):
         self.group_name = "Command_"
@@ -58,17 +58,45 @@ class CommandConsumer(AsyncWebsocketConsumer):
                 'data': event['data']
             }))
 
-    async def handelCommand(self, command, vitess=0):
-        if str(command) == self.DECISION.FORWARD:
+    async def handelCommand(self, command, vitess=0, exec=False):
+        if str(command) == self.DECISION.FORWARD and ~exec:
             self.forward(vitess=vitess)
-        if str(command) == self.DECISION.BACKWARD:
+        if str(command) == self.DECISION.BACKWARD and ~exec:
             self.backward(vitess=vitess)
-        if str(command) == self.DECISION.LEFT:
+        if str(command) == self.DECISION.LEFT and ~exec:
             self.turn_left(vitess=vitess)
-        if str(command) == self.DECISION.RIGHT:
+        if str(command) == self.DECISION.RIGHT and ~exec:
             self.turn_right(vitess=vitess)
-        if str(command) == self.DECISION.IDLE:
+        if str(command) == self.DECISION.IDLE and ~exec:
             self.stop()
+        ###############################################
+        # TODO add argument vitess for command
+        if str(command) == self.DECISION.FORWARD and exec:
+            self.execforward(vitess=vitess)
+        if str(command) == self.DECISION.BACKWARD and exec:
+            self.execbackward(vitess=vitess)
+        if str(command) == self.DECISION.LEFT and exec:
+            self.execturn_left(vitess=vitess)
+        if str(command) == self.DECISION.RIGHT and exec:
+            self.execturn_right(vitess=vitess)
+        if str(command) == self.DECISION.IDLE and exec:
+            self.stop()
+
+    async def execforward(self, vitess):
+        path = "python3 ./forward.py %d"
+        x = subprocess.Popen(path % (vitess))
+
+    async def execbackward(self, vitess):
+        path = "python3 ./backward.py %d"
+        x = subprocess.Popen(path % (vitess))
+
+    async def execturn_right(self, vitess):
+        path = "python3 ./right.py %d"
+        x = subprocess.Popen(path % (vitess))
+
+    async def execturn_left(self, vitess):
+        path = "python3 ./left.py %d"
+        x = subprocess.Popen(path % (vitess))
 
     def forward(self, vitess: int):
         gpio.output(self.PINS.IN1, False)
@@ -114,8 +142,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         vitess = 0
         print("decision ", text_data_json['decision'], "\v")
         decision = text_data_json['decision']
-        if decision == self.IDLE:
-            self.handelCommand(command=self.IDLE, vitess=vitess)
-        else:
-            vitess = int(text_data_json['vitess'])
-            self.handelCommand(command=decision, vitess=vitess)
+        # if decision == self.IDLE:
+        #     self.handelCommand(command=self.IDLE, vitess=vitess)
+        # else:
+        #     vitess = int(text_data_json['vitess'])
+        #     self.handelCommand(command=decision, vitess=vitess)
