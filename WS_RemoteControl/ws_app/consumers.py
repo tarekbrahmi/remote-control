@@ -7,12 +7,13 @@ import subprocess
 
 class PINS:
     ######## PINS ########
-    ENA = 0
-    ENB = 0
-    IN1 = 17
-    IN2 = 22
-    IN3 = 23
-    IN4 = 24
+    EN_LEFT = 13
+    IN1 = 7
+    IN2 = 11
+
+    EN_RIGHT = 12
+    IN3 = 8
+    IN4 = 10
 
 
 class DECISION:
@@ -34,12 +35,19 @@ class CommandConsumer(AsyncWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # gpio.setmode(gpio.BCM)
-
-        # gpio.setup(self.PINS.IN1, gpio.OUT)
-        # gpio.setup(self.PINS.IN2, gpio.OUT)
-        # gpio.setup(self.PINS.IN3, gpio.OUT)
-        # gpio.setup(self.PINS.IN4, gpio.OUT)
+        gpio.setmode(gpio.BCM)
+        gpio.setwarnings(False)
+        gpio.setmode(gpio.BOARD)
+        gpio.setup(self.PINS.IN1, gpio.OUT)
+        gpio.setup(self.PINS.IN2, gpio.OUT)
+        gpio.setup(self.PINS.IN3, gpio.OUT)
+        gpio.setup(self.PINS.IN4, gpio.OUT)
+        self.EN_RIGHT_PWM = gpio.PWM(self.PINS.EN_RIGHT, 100)
+        self.EN_RIGHT_PWM.start(50)
+        gpio.output(self.PINS.EN_RIGHT, gpio.HIGH)
+        self.EN_LEFT_PWM = gpio.PWM(self.PINS.EN_LEFT, 100)
+        self.EN_LEFT_PWM.start(50)
+        gpio.output(self.PINS.EN_LEFT, gpio.HIGH)
         print("set up the GPIO")
 
     async def connect(self):
@@ -104,7 +112,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN3, True)
         gpio.output(self.PINS.IN4, False)
         sleep(self.SLEEP_TIME)
-        self.clean()
+        # self.clean()
 
     def backward(self, vitess: int):
         gpio.output(self.PINS.IN1, True)
@@ -142,8 +150,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         vitess = 0
         print("decision ", text_data_json['decision'], "\v")
         decision = text_data_json['decision']
-        # if decision == self.IDLE:
-        #     self.handelCommand(command=self.IDLE, vitess=vitess)
-        # else:
-        #     vitess = int(text_data_json['vitess'])
-        #     self.handelCommand(command=decision, vitess=vitess)
+        if decision == self.IDLE:
+            self.handelCommand(command=self.IDLE, vitess=vitess)
+        else:
+            vitess = int(text_data_json['vitess'])
+            self.handelCommand(command=decision, vitess=vitess)
