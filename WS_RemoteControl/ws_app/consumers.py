@@ -67,15 +67,15 @@ class CommandConsumer(AsyncWebsocketConsumer):
             }))
 
     async def handelCommand(self, command, vitess=0, exec=False):
-        if str(command) == self.DECISION.FORWARD and ~exec:
+        if str(command) == self.DECISION.FORWARD and not exec:
             self.forward(vitess=vitess)
-        if str(command) == self.DECISION.BACKWARD and ~exec:
+        if str(command) == self.DECISION.BACKWARD and not exec:
             self.backward(vitess=vitess)
-        if str(command) == self.DECISION.LEFT and ~exec:
+        if str(command) == self.DECISION.LEFT and not exec:
             self.turn_left(vitess=vitess)
-        if str(command) == self.DECISION.RIGHT and ~exec:
+        if str(command) == self.DECISION.RIGHT and not exec:
             self.turn_right(vitess=vitess)
-        if str(command) == self.DECISION.IDLE and ~exec:
+        if str(command) == self.DECISION.IDLE and not exec:
             self.stop()
         ###############################################
         # TODO add argument vitess for command
