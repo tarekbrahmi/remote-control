@@ -107,6 +107,9 @@ class CommandConsumer(AsyncWebsocketConsumer):
         x = subprocess.Popen(path % (vitess))
 
     def forward(self, vitess: int):
+        #TODO add the  ChangeDutyCycle to vitess
+        self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+        self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, False)
         gpio.output(self.PINS.IN2, True)
         gpio.output(self.PINS.IN3, True)
@@ -115,6 +118,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         # self.clean()
 
     def backward(self, vitess: int):
+        self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+        self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, True)
         gpio.output(self.PINS.IN2, False)
         gpio.output(self.PINS.IN3, False)
@@ -123,6 +128,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         # self.clean()
 
     def turn_right(self, vitess: int):
+        self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+        self.EN_RIGHT_PWM.ChangeDutyCycle(100-vitess)
         gpio.output(self.PINS.IN1, False)
         gpio.output(self.PINS.IN2, True)
         gpio.output(self.PINS.IN3, False)
@@ -131,6 +138,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         # self.clean()
 
     def turn_left(self, vitess: int):
+        self.EN_LEFT_PWM.ChangeDutyCycle(100-vitess)
+        self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, True)
         gpio.output(self.PINS.IN2, False)
         gpio.output(self.PINS.IN3, True)
@@ -139,6 +148,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         # self.clean()
 
     def stop(self):
+        self.EN_LEFT_PWM.ChangeDutyCycle(0)
+        self.EN_RIGHT_PWM.ChangeDutyCycle(0)
         gpio.output(self.PINS.IN1, False)
         gpio.output(self.PINS.IN2, False)
         gpio.output(self.PINS.IN3, False)
