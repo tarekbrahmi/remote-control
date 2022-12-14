@@ -42,8 +42,10 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.setup(self.PINS.IN2, gpio.OUT)
         gpio.setup(self.PINS.IN3, gpio.OUT)
         gpio.setup(self.PINS.IN4, gpio.OUT)
-        self.EN_RIGHT_PWM = gpio.PWM(self.PINS.EN_RIGHT, 100)
-        self.EN_RIGHT_PWM.start(50)
+        #GPIO.PWM(channel, frequence)
+        self.EN_RIGHT_PWM = gpio.PWM(self.PINS.EN_RIGHT, 100) 
+        ##ici, rapport_cyclique vaut entre 0.0 et 100.0
+        self.EN_RIGHT_PWM.start(50) 
         gpio.output(self.PINS.EN_RIGHT, gpio.HIGH)
         self.EN_LEFT_PWM = gpio.PWM(self.PINS.EN_LEFT, 100)
         self.EN_LEFT_PWM.start(50)
