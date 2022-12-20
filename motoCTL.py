@@ -54,7 +54,8 @@ class motor():
         sleep(t)
             
     def stop(self,t=0):
-        self.pwm.ChangeDutyCycle(0)
+        self.pwma.ChangeDutyCycle(0)
+        self.pwmb.ChangeDutyCycle(0)
         sleep(t)
  
 motor1 = motor(2,3,4,17,27,22)
