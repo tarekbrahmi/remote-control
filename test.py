@@ -1,3 +1,4 @@
+
 import RPi.GPIO as GPIO
 from time import sleep
 GPIO.setmode(GPIO.BCM)
@@ -64,9 +65,13 @@ def main():
  
 if __name__ == '__main__':
     motor= Motor(2,3,4,17,22,27)
+<<<<<<< HEAD
     main()
  
 
     
 
     
+=======
+    main()
+>>>>>>> 3f03a2760e381545d59beb8883d61b81b8e02487
