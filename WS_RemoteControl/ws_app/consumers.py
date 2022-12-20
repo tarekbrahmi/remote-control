@@ -68,7 +68,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
                 'data': event['data']
             }))
 
-    async def handelCommand(self, command, vitess=0, exec=gpio.LOW):
+    async def handelCommand(self, command, vitess=0, exec=False):
         if str(command) == self.DECISION.FORWARD and not exec:
             self.forward(vitess=vitess)
         if str(command) == self.DECISION.BACKWARD and not exec:
