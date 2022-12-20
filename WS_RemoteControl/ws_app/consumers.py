@@ -36,8 +36,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         gpio.setmode(gpio.BCM)
-        gpio.setwarnings(gpio.LOW)
-        gpio.setmode(gpio.BOARD)
+        gpio.setwarnings(False)
         gpio.setup(self.PINS.IN1, gpio.OUT)
         gpio.setup(self.PINS.IN2, gpio.OUT)
         gpio.setup(self.PINS.IN3, gpio.OUT)
