@@ -57,9 +57,9 @@ class Motor():
  
  
 def main():
-    motor.move(0.6,0,2)
+    motor.move(0.8,0,5)
     motor.stop(2)
-    motor.move(-0.5,0.2,2)
+    motor.move(0.8,0.2,5)
     motor.stop(2)
  
 if __name__ == '__main__':
