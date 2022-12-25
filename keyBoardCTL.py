@@ -1,3 +1,4 @@
+import pygame
 
 import RPi.GPIO as GPIO
 from time import sleep
@@ -54,18 +55,34 @@ class motor():
         GPIO.output(self.In2,GPIO.LOW)
         GPIO.output(self.In3,GPIO.HIGH)
         GPIO.output(self.In4,GPIO.LOW)
-        sleep(t)
-            
-    def stop(self,t=0):
-        self.pwma.ChangeDutyCycle(0)
-        self.pwmb.ChangeDutyCycle(0)
-        sleep(t)
+        sleep(t) 
+def init():
+    pygame.init()
+    win = pygame.display.set_mode((100,100))
  
-motor1 = motor(2,3,4,17,27,22)
+def getKey(keyName):
+    ans = False
+    for eve in pygame.event.get():pass
+    keyInput = pygame.key.get_pressed()
+    myKey = getattr(pygame,'K_{}'.format(keyName))
+    if keyInput [myKey]:
+        ans = True
+    pygame.display.update()
  
-while True:
-    
-    motor1.moveF(80,2)
-    motor1.stop(1)
-    motor1.moveLeft(t=2)
-    motor1.stop(1)
+    return ans
+ 
+def main():
+    motor1 = motor(2,3,4,17,27,22)
+    if getKey('LEFT'):
+        motor1.moveLeft(t=1)
+    if getKey('RIGHT'):
+        motor1.moveright(t=1)
+    if getKey('UP'):
+        motor1.moveF(80,t=1)
+    if getKey('DOWN'):
+        motor1.moveB(80,t=1)
+ 
+if __name__ == '__main__':
+    init()
+    while True:
+        main()
