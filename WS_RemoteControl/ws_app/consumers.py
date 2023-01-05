@@ -41,6 +41,8 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.setup(self.PINS.IN2, gpio.OUT)
         gpio.setup(self.PINS.IN3, gpio.OUT)
         gpio.setup(self.PINS.IN4, gpio.OUT)
+        gpio.setup(self.PINS.EN_LEFT, gpio.OUT)
+        gpio.setup(self.PINS.EN_RIGHT, gpio.OUT)
         #GPIO.PWM(channel, frequence)
         self.EN_RIGHT_PWM = gpio.PWM(self.PINS.EN_RIGHT, 100) 
         ##ici, rapport_cyclique vaut entre 0.0 et 100.0
@@ -155,15 +157,15 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN2, gpio.LOW)
         gpio.output(self.PINS.IN3, gpio.LOW)
         gpio.output(self.PINS.IN4, gpio.LOW)
-        self.clean()
+        # self.clean()
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         vitess = 0
-        print("decision ", text_data_json['decision'], "\v")
-        decision = text_data_json['decision']
-        if decision == self.IDLE:
-            self.handelCommand(command=self.IDLE, vitess=vitess)
-        else:
-            vitess = int(text_data_json['vitess'])
-            self.handelCommand(command=decision, vitess=vitess)
+        if  "decision" in text_data_json:
+            decision = text_data_json['decision']
+            if decision == self.DECISION.IDLE:
+                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess)
+            else:
+                vitess = int(text_data_json['vitess'])
+                await self.handelCommand(command=decision, vitess=vitess)

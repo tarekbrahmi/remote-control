@@ -24,6 +24,24 @@
         "documentation": {}
     },
     {
+        "label": "RPi.GPIO",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "RPi.GPIO",
+        "description": "RPi.GPIO",
+        "detail": "RPi.GPIO",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
         "label": "AsyncWebsocketConsumer",
         "importPath": "channels.generic.websocket",
         "description": "channels.generic.websocket",
@@ -38,6 +56,31 @@
         "importPath": "json",
         "description": "json",
         "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
+        "isExtraImport": true,
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
+        "isExtraImport": true,
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
         "documentation": {}
     },
     {
@@ -139,15 +182,6 @@
         "documentation": {}
     },
     {
-        "label": "sys",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "sys",
-        "description": "sys",
-        "detail": "sys",
-        "documentation": {}
-    },
-    {
         "label": "warnings",
         "kind": 6,
         "isExtraImport": true,
@@ -165,23 +199,6 @@
         "documentation": {}
     },
     {
-        "label": "RPi.GPIO",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "RPi.GPIO",
-        "description": "RPi.GPIO",
-        "detail": "RPi.GPIO",
-        "documentation": {}
-    },
-    {
-        "label": "sleep",
-        "importPath": "time",
-        "description": "time",
-        "isExtraImport": true,
-        "detail": "time",
-        "documentation": {}
-    },
-    {
         "label": "WsAppConfig",
         "kind": 6,
         "importPath": "WS_RemoteControl.ws_app.apps",
@@ -191,12 +208,66 @@
         "documentation": {}
     },
     {
+        "label": "PINS",
+        "kind": 5,
+        "importPath": "WS_RemoteControl.ws_app.backward",
+        "description": "WS_RemoteControl.ws_app.backward",
+        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\ngpio.output(PINS.IN1, True)\ngpio.output(PINS.IN2, False)\ngpio.output(PINS.IN3, False)\ngpio.output(PINS.IN4, True)",
+        "detail": "WS_RemoteControl.ws_app.backward",
+        "documentation": {}
+    },
+    {
+        "label": "PINS",
+        "kind": 6,
+        "importPath": "WS_RemoteControl.ws_app.consumers",
+        "description": "WS_RemoteControl.ws_app.consumers",
+        "peekOfCode": "class PINS:\n    ######## PINS ########\n    EN_LEFT = 2\n    IN1 = 3\n    IN2 = 4\n    EN_RIGHT = 17\n    IN3 = 27\n    IN4 = 22\nclass DECISION:\n    IDLE = \"IDLE\"",
+        "detail": "WS_RemoteControl.ws_app.consumers",
+        "documentation": {}
+    },
+    {
+        "label": "DECISION",
+        "kind": 6,
+        "importPath": "WS_RemoteControl.ws_app.consumers",
+        "description": "WS_RemoteControl.ws_app.consumers",
+        "peekOfCode": "class DECISION:\n    IDLE = \"IDLE\"\n    FORWARD = \"FORWARD\"\n    BACKWARD = \"BACKWARD\"\n    RIGHT = \"RIGHT\"\n    LEFT = \"LEFT\"\nclass CommandConsumer(AsyncWebsocketConsumer):\n    # decisions\n    DECISION = DECISION\n    PINS = PINS",
+        "detail": "WS_RemoteControl.ws_app.consumers",
+        "documentation": {}
+    },
+    {
         "label": "CommandConsumer",
         "kind": 6,
         "importPath": "WS_RemoteControl.ws_app.consumers",
         "description": "WS_RemoteControl.ws_app.consumers",
-        "peekOfCode": "class CommandConsumer(AsyncWebsocketConsumer):\n    \"\"\"_summary_\n    Args:\n        AsyncWebsocketConsumer (_type_): _description_\n    \"\"\"\n    async def connect(self):\n        self.group_name = \"Command_\"\n        self.groups.append('Command_GROUP_')\n        await self.channel_layer.group_add(\"Command_\", self.channel_name)\n        await self.accept()",
+        "peekOfCode": "class CommandConsumer(AsyncWebsocketConsumer):\n    # decisions\n    DECISION = DECISION\n    PINS = PINS\n    SLEEP_TIME = 1\n    def clean():\n        gpio.cleanup()\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        gpio.setmode(gpio.BCM)",
         "detail": "WS_RemoteControl.ws_app.consumers",
+        "documentation": {}
+    },
+    {
+        "label": "PINS",
+        "kind": 5,
+        "importPath": "WS_RemoteControl.ws_app.forward",
+        "description": "WS_RemoteControl.ws_app.forward",
+        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\ngpio.output(PINS.IN1, False)\ngpio.output(PINS.IN2, True)\ngpio.output(PINS.IN3, True)\ngpio.output(PINS.IN4, False)",
+        "detail": "WS_RemoteControl.ws_app.forward",
+        "documentation": {}
+    },
+    {
+        "label": "PINS",
+        "kind": 5,
+        "importPath": "WS_RemoteControl.ws_app.left",
+        "description": "WS_RemoteControl.ws_app.left",
+        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\ngpio.output(PINS.IN1, True)\ngpio.output(PINS.IN2, False)\ngpio.output(PINS.IN3, False)\ngpio.output(PINS.IN4, True)",
+        "detail": "WS_RemoteControl.ws_app.left",
+        "documentation": {}
+    },
+    {
+        "label": "PINS",
+        "kind": 5,
+        "importPath": "WS_RemoteControl.ws_app.right",
+        "description": "WS_RemoteControl.ws_app.right",
+        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\ngpio.output(PINS.IN1, False)\ngpio.output(PINS.IN2, True)\ngpio.output(PINS.IN3, False)\ngpio.output(PINS.IN4, True)",
+        "detail": "WS_RemoteControl.ws_app.right",
         "documentation": {}
     },
     {
@@ -497,20 +568,20 @@
         "documentation": {}
     },
     {
-        "label": "motor",
+        "label": "Motor",
         "kind": 6,
         "importPath": "test",
         "description": "test",
-        "peekOfCode": "class motor():\n    def __init__(self,Ena,In1,In2):\n        self.Ena = Ena\n        self.In1 = In1\n        self.In2 = In2\n        GPIO.setup(self.Ena,GPIO.OUT)\n        GPIO.setup(self.In1,GPIO.OUT)\n        GPIO.setup(self.In2,GPIO.OUT)\n        self.pwm = GPIO.PWM(self.Ena, 100)\n        self.pwm.start(0)",
+        "peekOfCode": "class Motor():\n    def __init__(self,EnaA,In1A,In2A,EnaB,In1B,In2B):\n        self.EnaA = EnaA\n        self.In1A = In1A\n        self.In2A = In2A\n        self.EnaB = EnaB\n        self.In1B = In1B\n        self.In2B = In2B\n        GPIO.setup(self.EnaA,GPIO.OUT)\n        GPIO.setup(self.In1A,GPIO.OUT)",
         "detail": "test",
         "documentation": {}
     },
     {
-        "label": "motor1",
-        "kind": 5,
+        "label": "main",
+        "kind": 2,
         "importPath": "test",
         "description": "test",
-        "peekOfCode": "motor1 = motor(2,3,4)\nwhile True:\n    motor1.moveF(30,2)\n    motor1.stop(1)\n    motor1.moveB(t=2)\n    motor1.stop(1)\n    '''\n    for x in range(20,100):\n        motor1.moveF(x,0.05)\n        print(x)",
+        "peekOfCode": "def main():\n    motor.move(0.6,0,2)\n    motor.stop(2)\n    motor.move(-0.5,0.2,2)\n    motor.stop(2)\nif __name__ == '__main__':\n    motor= Motor(2,3,4,17,22,27)\n    main()",
         "detail": "test",
         "documentation": {}
     }
