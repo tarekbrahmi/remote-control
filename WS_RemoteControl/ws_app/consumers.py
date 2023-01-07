@@ -177,7 +177,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         if "decision" in text_data_json:
             decision = text_data_json['decision']
             if decision == self.DECISION.IDLE:
-                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess)
+                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess,exec=True)
             else:
                 vitess = int(text_data_json['vitess'])
-                await self.handelCommand(command=decision, vitess=vitess)
+                await self.handelCommand(command=decision, vitess=vitess,exec=True)
