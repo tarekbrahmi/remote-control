@@ -43,10 +43,10 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.setup(self.PINS.IN4, gpio.OUT)
         gpio.setup(self.PINS.EN_LEFT, gpio.OUT)
         gpio.setup(self.PINS.EN_RIGHT, gpio.OUT)
-        #GPIO.PWM(channel, frequence)
-        self.EN_RIGHT_PWM = gpio.PWM(self.PINS.EN_RIGHT, 100) 
-        ##ici, rapport_cyclique vaut entre 0.0 et 100.0
-        self.EN_RIGHT_PWM.start(0) 
+        # GPIO.PWM(channel, frequence)
+        self.EN_RIGHT_PWM = gpio.PWM(self.PINS.EN_RIGHT, 100)
+        # ici, rapport_cyclique vaut entre 0.0 et 100.0
+        self.EN_RIGHT_PWM.start(0)
         # gpio.output(self.PINS.EN_RIGHT, gpio.HIGH)
         self.EN_LEFT_PWM = gpio.PWM(self.PINS.EN_LEFT, 100)
         self.EN_LEFT_PWM.start(0)
@@ -95,22 +95,34 @@ class CommandConsumer(AsyncWebsocketConsumer):
 
     async def execforward(self, vitess):
         path = "python3 ./forward.py %d"
-        x = subprocess.Popen(path % (vitess))
+        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if x.stdout:
+            # command executed
+            pass
 
     async def execbackward(self, vitess):
         path = "python3 ./backward.py %d"
-        x = subprocess.Popen(path % (vitess))
+        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if x.stdout:
+            # command executed
+            pass
 
     async def execturn_right(self, vitess):
         path = "python3 ./right.py %d"
-        x = subprocess.Popen(path % (vitess))
+        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if x.stdout:
+            # command executed
+            pass
 
     async def execturn_left(self, vitess):
         path = "python3 ./left.py %d"
-        x = subprocess.Popen(path % (vitess))
+        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if x.stdout:
+            # command executed
+            pass
 
     def forward(self, vitess: int):
-        #TODO add the  ChangeDutyCycle to vitess
+        # TODO add the  ChangeDutyCycle to vitess
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
         self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, gpio.HIGH)
@@ -162,7 +174,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         vitess = 0
-        if  "decision" in text_data_json:
+        if "decision" in text_data_json:
             decision = text_data_json['decision']
             if decision == self.DECISION.IDLE:
                 await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess)
