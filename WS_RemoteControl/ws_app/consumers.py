@@ -83,15 +83,15 @@ class CommandConsumer(AsyncWebsocketConsumer):
         ###############################################
         # TODO add argument vitess for command
         if str(command) == self.DECISION.FORWARD and exec:
-            self.execforward(vitess=vitess)
+            await self.execforward(vitess=vitess)
         if str(command) == self.DECISION.BACKWARD and exec:
-            self.execbackward(vitess=vitess)
+            await self.execbackward(vitess=vitess)
         if str(command) == self.DECISION.LEFT and exec:
-            self.execturn_left(vitess=vitess)
+            await self.execturn_left(vitess=vitess)
         if str(command) == self.DECISION.RIGHT and exec:
-            self.execturn_right(vitess=vitess)
+            await self.execturn_right(vitess=vitess)
         if str(command) == self.DECISION.IDLE and exec:
-            self.stop()
+            await self.stop()
 
     async def execforward(self, vitess):
         path = "python3 ./forward.py %d"
