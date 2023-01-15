@@ -4,6 +4,7 @@ import sys
 PINS = PINS()
 vitess=int(sys.argv[1])
 # setup GPIO
+print("execute left.py with args %s "%(vitess))
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
 gpio.setup(PINS.IN1, gpio.OUT)
