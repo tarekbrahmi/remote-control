@@ -70,28 +70,32 @@ class CommandConsumer(AsyncWebsocketConsumer):
             }))
 
     async def handelCommand(self, command, vitess=0, exec=False):
-        if str(command) == self.DECISION.FORWARD and not exec:
-            self.forward(vitess=vitess)
-        if str(command) == self.DECISION.BACKWARD and not exec:
-            self.backward(vitess=vitess)
-        if str(command) == self.DECISION.LEFT and not exec:
-            self.turn_left(vitess=vitess)
-        if str(command) == self.DECISION.RIGHT and not exec:
-            self.turn_right(vitess=vitess)
-        if str(command) == self.DECISION.IDLE and not exec:
-            self.stop()
+        # if str(command) == self.DECISION.FORWARD and not exec:
+        #     self.forward(vitess=vitess)
+        # if str(command) == self.DECISION.BACKWARD and not exec:
+        #     self.backward(vitess=vitess)
+        # if str(command) == self.DECISION.LEFT and not exec:
+        #     self.turn_left(vitess=vitess)
+        # if str(command) == self.DECISION.RIGHT and not exec:
+        #     self.turn_right(vitess=vitess)
+        # if str(command) == self.DECISION.IDLE and not exec:
+        #     self.stop()
         ###############################################
         # TODO add argument vitess for command
         if str(command) == self.DECISION.FORWARD and exec:
+            print("forward with vitess %d"%(vitess))
             await self.execforward(vitess=vitess)
         if str(command) == self.DECISION.BACKWARD and exec:
+            print("backward with vitess %d"%(vitess))
             await self.execbackward(vitess=vitess)
         if str(command) == self.DECISION.LEFT and exec:
+            print("left with vitess %d"%(vitess))
             await self.execturn_left(vitess=vitess)
         if str(command) == self.DECISION.RIGHT and exec:
+            print("right with vitess %d"%(vitess))
             await self.execturn_right(vitess=vitess)
-        if str(command) == self.DECISION.IDLE and exec:
-            await self.stop()
+        # if str(command) == self.DECISION.IDLE and exec:
+        #     await self.stop()
 
     async def execforward(self, vitess):
         path = "python3 ./forward.py %d"
@@ -170,6 +174,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN3, gpio.LOW)
         gpio.output(self.PINS.IN4, gpio.LOW)
         # self.clean()
+        return 0
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
