@@ -223,7 +223,7 @@
         "kind": 6,
         "importPath": "WS_RemoteControl.ws_app.consumers",
         "description": "WS_RemoteControl.ws_app.consumers",
-        "peekOfCode": "class CommandConsumer(AsyncWebsocketConsumer):\n    # decisions\n    DECISION = DECISION\n    PINS = PINS\n    SLEEP_TIME = .7\n    def clean():\n        gpio.cleanup()\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        gpio.setmode(gpio.BCM)",
+        "peekOfCode": "class CommandConsumer(AsyncWebsocketConsumer):\n    # decisions\n    DECISION = DECISION\n    PINS = PINS\n    SLEEP_TIME = .7\n    def clean(self):\n        gpio.cleanup()\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        gpio.setmode(gpio.BCM)",
         "detail": "WS_RemoteControl.ws_app.consumers",
         "documentation": {}
     },

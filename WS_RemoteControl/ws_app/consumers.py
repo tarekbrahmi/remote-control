@@ -31,7 +31,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
     PINS = PINS
     SLEEP_TIME = .7
 
-    def clean():
+    def clean(self):
         gpio.cleanup()
 
     def __init__(self, *args, **kwargs):
@@ -70,8 +70,12 @@ class CommandConsumer(AsyncWebsocketConsumer):
                 'data': event['data']
             }))
 
+    async def disconnect(self, close_code):
+        self.clean()
+        await super().disconnect(close_code)
+
     async def handelCommand(self, command, vitess=100, exec=False):
-        print('commande %s'%str(command))
+        print('commande %s' % str(command))
         if str(command) == self.DECISION.FORWARD and not exec:
             self.forward(vitess=vitess)
         if str(command) == self.DECISION.BACKWARD and not exec:
@@ -83,7 +87,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         if str(command) == self.DECISION.IDLE and not exec:
             self.stop()
         ###############################################
-        
+
     def forward(self, vitess: int):
         # TODO add the  ChangeDutyCycle to vitess-->DONE
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
@@ -93,7 +97,6 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN3, gpio.HIGH)
         gpio.output(self.PINS.IN4, gpio.LOW)
         sleep(self.SLEEP_TIME)
-        # self.clean()
 
     def backward(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
@@ -103,7 +106,6 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN3, gpio.LOW)
         gpio.output(self.PINS.IN4, gpio.HIGH)
         sleep(self.SLEEP_TIME)
-        # self.clean()
 
     def turn_right(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
@@ -113,7 +115,6 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN3, gpio.HIGH)
         gpio.output(self.PINS.IN4, gpio.LOW)
         sleep(self.SLEEP_TIME)
-        # self.clean()
 
     def turn_left(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(80)
@@ -123,7 +124,6 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN3, gpio.HIGH)
         gpio.output(self.PINS.IN4, gpio.LOW)
         sleep(self.SLEEP_TIME)
-        # self.clean()
 
     def stop(self):
         self.EN_LEFT_PWM.ChangeDutyCycle(0)
@@ -132,7 +132,6 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN2, gpio.LOW)
         gpio.output(self.PINS.IN3, gpio.LOW)
         gpio.output(self.PINS.IN4, gpio.LOW)
-        # self.clean()
         return 0
 
     async def receive(self, text_data):
@@ -141,7 +140,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         if "decision" in text_data_json:
             decision = text_data_json['decision']
             if decision == self.DECISION.IDLE:
-                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess,exec=False)
+                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess, exec=False)
             else:
                 vitess = int(text_data_json['vitess'])
-                await self.handelCommand(command=decision, vitess=vitess,exec=False)
+                await self.handelCommand(command=decision, vitess=vitess, exec=False)
