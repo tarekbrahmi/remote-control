@@ -1,7 +1,15 @@
 import RPi.GPIO as gpio
-from .consumers import PINS
 import sys
-PINS = PINS()
+from time import sleep
+class PINS:
+    ######## PINS ########
+    EN_LEFT = 2
+    IN1 = 3
+    IN2 = 4
+
+    EN_RIGHT = 17
+    IN3 = 27
+    IN4 = 22
 vitess=int(sys.argv[1])
 # setup GPIO
 print("execute forward.py with args %s "%(vitess))
@@ -28,3 +36,12 @@ gpio.output(PINS.IN1, gpio.HIGH)
 gpio.output(PINS.IN2, gpio.LOW)
 gpio.output(PINS.IN3, gpio.HIGH)
 gpio.output(PINS.IN4, gpio.LOW)
+
+sleep(.1)
+#stop
+gpio.output(PINS.IN1, gpio.LOW)
+gpio.output(PINS.IN2, gpio.LOW)
+gpio.output(PINS.IN3, gpio.LOW)
+gpio.output(PINS.IN4, gpio.LOW)
+
+

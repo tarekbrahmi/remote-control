@@ -3,6 +3,7 @@ import json
 from time import sleep
 import RPi.GPIO as gpio
 import subprocess
+import os
 
 
 class PINS:
@@ -98,12 +99,15 @@ class CommandConsumer(AsyncWebsocketConsumer):
         #     await self.stop()
 
     async def execforward(self, vitess):
-        path = "python3 ./forward.py %d"
-        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if x.stdout:
-            # command executed
-            pass
-
+        path = "python /home/pi/remote-control/WS_RemoteControl/ws_app/forward.py %d"
+        x=os.system(path % (vitess))
+        if x==0:
+            # commande executed                
+            await self.channel_layer.group_send("Command_", {
+                "type": "send_message",
+                "data": "vitess %d"%vitess
+            })
+        
     async def execbackward(self, vitess):
         path = "python3 ./backward.py %d"
         x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
