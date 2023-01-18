@@ -107,7 +107,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
 
     def turn_right(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
-        self.EN_RIGHT_PWM.ChangeDutyCycle(100-vitess)
+        self.EN_RIGHT_PWM.ChangeDutyCycle(80)
         gpio.output(self.PINS.IN1, gpio.HIGH)
         gpio.output(self.PINS.IN2, gpio.LOW)
         gpio.output(self.PINS.IN3, gpio.HIGH)
@@ -116,7 +116,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         # self.clean()
 
     def turn_left(self, vitess: int):
-        self.EN_LEFT_PWM.ChangeDutyCycle(100-vitess)
+        self.EN_LEFT_PWM.ChangeDutyCycle(80)
         self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, gpio.HIGH)
         gpio.output(self.PINS.IN2, gpio.LOW)
