@@ -83,53 +83,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         if str(command) == self.DECISION.IDLE and not exec:
             self.stop()
         ###############################################
-        # TODO add argument vitess for command
-        if str(command) == self.DECISION.FORWARD and exec:
-            print("forward with vitess %d"%(vitess))
-            await self.execforward(vitess=vitess)
-        if str(command) == self.DECISION.BACKWARD and exec:
-            print("backward with vitess %d"%(vitess))
-            await self.execbackward(vitess=vitess)
-        if str(command) == self.DECISION.LEFT and exec:
-            print("left with vitess %d"%(vitess))
-            await self.execturn_left(vitess=vitess)
-        if str(command) == self.DECISION.RIGHT and exec:
-            print("right with vitess %d"%(vitess))
-            await self.execturn_right(vitess=vitess)
-        # if str(command) == self.DECISION.IDLE and exec:
-        #     await self.stop()
-
-    async def execforward(self, vitess):
-        path = "python /home/pi/remote-control/WS_RemoteControl/ws_app/forward.py %d"
-        x=os.system(path % (vitess))
-        if x==0:
-            # commande executed                
-            await self.channel_layer.group_send("Command_", {
-                "type": "send_message",
-                "data": "vitess %d"%vitess
-            })
         
-    async def execbackward(self, vitess):
-        path = "python3 ./backward.py %d"
-        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if x.stdout:
-            # command executed
-            pass
-
-    async def execturn_right(self, vitess):
-        path = "python3 ./right.py %d"
-        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if x.stdout:
-            # command executed
-            pass
-
-    async def execturn_left(self, vitess):
-        path = "python3 ./left.py %d"
-        x = subprocess.Popen(path % (vitess), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if x.stdout:
-            # command executed
-            pass
-
     def forward(self, vitess: int):
         # TODO add the  ChangeDutyCycle to vitess
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)

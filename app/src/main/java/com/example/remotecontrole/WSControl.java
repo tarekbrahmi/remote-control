@@ -41,7 +41,7 @@ public class WSControl extends AppCompatActivity {
     public static final int CONNECTED = 1;
     public static final int CLOSED = 2;
     public static final int FAILED = 3;
-    String serverIp="192.168.43.181";
+    String serverIp="192.168.43.209";
     String serverPort="8000";
     Handler handler;
     String Title="Control With JoyStick";
@@ -101,22 +101,22 @@ public class WSControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
-                if (strength>60&&(angle<=100 && angle>=80)){
+                if (strength>=100&&(angle<=100 && angle>=80)){
                     // is up(90)  80<angle<100
                     webSocket.send("{\"decision\":\"FORWARD\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("FORWARD");
-                }else if(strength>60&&(angle<=280 && angle>=260)){
+                }else if(strength>=100&&(angle<=280 && angle>=260)){
                     // is down(270)  260<angle<280
                     webSocket.send("{\"decision\":\"BACKWARD\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("BACKWARD");
-                }else if(strength>60&&(angle>0 && angle<=10)){
+                }else if(strength>=100&&(angle>0 && angle<=10)){
                     // is right(0)  10<angle<350
                     webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("RIGHT");
-                }else if(strength>60&&(angle>=350 && angle<360)){
+                }else if(strength>=100&&(angle>=350 && angle<360)){
                     webSocket.send("{\"decision\":\"RIGHT\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("RIGHT");
-                }else if(strength>60&&(angle<=190 && angle>=170)){
+                }else if(strength>=100&&(angle<=190 && angle>=170)){
                     // is left(180)  170<angle<190
                     webSocket.send("{\"decision\":\"LEFT\",\"vitess\":"+String.valueOf(strength)+"}");
                     txt_decision_value.setText("LEFT");
@@ -125,7 +125,7 @@ public class WSControl extends AppCompatActivity {
                     txt_decision_value.setText("IDLE");
                 }
             }
-        });
+        },750);
     }
     /* ============================ WS control =================================== */
     class EchoWebSocketListener extends WebSocketListener {
