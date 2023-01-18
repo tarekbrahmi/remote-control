@@ -85,7 +85,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         ###############################################
         
     def forward(self, vitess: int):
-        # TODO add the  ChangeDutyCycle to vitess
+        # TODO add the  ChangeDutyCycle to vitess-->DONE
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
         self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, gpio.HIGH)
@@ -137,7 +137,6 @@ class CommandConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        print('text_data_json, ',text_data_json) 
         vitess = 0
         if "decision" in text_data_json:
             decision = text_data_json['decision']

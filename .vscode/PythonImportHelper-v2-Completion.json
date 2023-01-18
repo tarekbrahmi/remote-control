@@ -1,44 +1,10 @@
 [
     {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
-        "documentation": {}
-    },
-    {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
-        "documentation": {}
-    },
-    {
         "label": "AppConfig",
         "importPath": "django.apps",
         "description": "django.apps",
         "isExtraImport": true,
         "detail": "django.apps",
-        "documentation": {}
-    },
-    {
-        "label": "RPi.GPIO",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "RPi.GPIO",
-        "description": "RPi.GPIO",
-        "detail": "RPi.GPIO",
-        "documentation": {}
-    },
-    {
-        "label": "sys",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "sys",
-        "description": "sys",
-        "detail": "sys",
         "documentation": {}
     },
     {
@@ -83,11 +49,12 @@
         "documentation": {}
     },
     {
-        "label": "sleep",
-        "importPath": "time",
-        "description": "time",
+        "label": "RPi.GPIO",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "time",
+        "importPath": "RPi.GPIO",
+        "description": "RPi.GPIO",
+        "detail": "RPi.GPIO",
         "documentation": {}
     },
     {
@@ -106,30 +73,6 @@
         "importPath": "os",
         "description": "os",
         "detail": "os",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "TestCase",
-        "importPath": "django.test",
-        "description": "django.test",
-        "isExtraImport": true,
-        "detail": "django.test",
-        "documentation": {}
-    },
-    {
-        "label": "render",
-        "importPath": "django.shortcuts",
-        "description": "django.shortcuts",
-        "isExtraImport": true,
-        "detail": "django.shortcuts",
         "documentation": {}
     },
     {
@@ -165,6 +108,14 @@
         "documentation": {}
     },
     {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
         "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -195,6 +146,15 @@
         "importPath": "site",
         "description": "site",
         "detail": "site",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
         "documentation": {}
     },
     {
@@ -242,33 +202,6 @@
     },
     {
         "label": "PINS",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.backward",
-        "description": "WS_RemoteControl.ws_app.backward",
-        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\n# setup GPIO\nprint(\"execute backward.py with args %s \"%(vitess))\ngpio.setmode(gpio.BCM)\ngpio.setwarnings(False)\ngpio.setup(PINS.IN1, gpio.OUT)\ngpio.setup(PINS.IN2, gpio.OUT)\ngpio.setup(PINS.IN3, gpio.OUT)\ngpio.setup(PINS.IN4, gpio.OUT)",
-        "detail": "WS_RemoteControl.ws_app.backward",
-        "documentation": {}
-    },
-    {
-        "label": "EN_RIGHT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.backward",
-        "description": "WS_RemoteControl.ws_app.backward",
-        "peekOfCode": "EN_RIGHT_PWM = gpio.PWM(PINS.EN_RIGHT, 100)\n# ici, rapport_cyclique vaut entre 0.0 et 100.0\nEN_RIGHT_PWM.start(0)\n# gpio.output(PINS.EN_RIGHT, gpio.HIGH)\nEN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\nEN_LEFT_PWM.ChangeDutyCycle(vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(vitess)\n# move backword\ngpio.output(PINS.IN1, gpio.LOW)",
-        "detail": "WS_RemoteControl.ws_app.backward",
-        "documentation": {}
-    },
-    {
-        "label": "EN_LEFT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.backward",
-        "description": "WS_RemoteControl.ws_app.backward",
-        "peekOfCode": "EN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\nEN_LEFT_PWM.ChangeDutyCycle(vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(vitess)\n# move backword\ngpio.output(PINS.IN1, gpio.LOW)\ngpio.output(PINS.IN2, gpio.HIGH)\ngpio.output(PINS.IN3, gpio.LOW)\ngpio.output(PINS.IN4, gpio.HIGH)",
-        "detail": "WS_RemoteControl.ws_app.backward",
-        "documentation": {}
-    },
-    {
-        "label": "PINS",
         "kind": 6,
         "importPath": "WS_RemoteControl.ws_app.consumers",
         "description": "WS_RemoteControl.ws_app.consumers",
@@ -292,87 +225,6 @@
         "description": "WS_RemoteControl.ws_app.consumers",
         "peekOfCode": "class CommandConsumer(AsyncWebsocketConsumer):\n    # decisions\n    DECISION = DECISION\n    PINS = PINS\n    SLEEP_TIME = .7\n    def clean():\n        gpio.cleanup()\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        gpio.setmode(gpio.BCM)",
         "detail": "WS_RemoteControl.ws_app.consumers",
-        "documentation": {}
-    },
-    {
-        "label": "PINS",
-        "kind": 6,
-        "importPath": "WS_RemoteControl.ws_app.forward",
-        "description": "WS_RemoteControl.ws_app.forward",
-        "peekOfCode": "class PINS:\n    ######## PINS ########\n    EN_LEFT = 2\n    IN1 = 3\n    IN2 = 4\n    EN_RIGHT = 17\n    IN3 = 27\n    IN4 = 22\nvitess=int(sys.argv[1])\n# setup GPIO",
-        "detail": "WS_RemoteControl.ws_app.forward",
-        "documentation": {}
-    },
-    {
-        "label": "EN_RIGHT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.forward",
-        "description": "WS_RemoteControl.ws_app.forward",
-        "peekOfCode": "EN_RIGHT_PWM = gpio.PWM(PINS.EN_RIGHT, 100)\n# ici, rapport_cyclique vaut entre 0.0 et 100.0\nEN_RIGHT_PWM.start(0)\n# gpio.output(PINS.EN_RIGHT, gpio.HIGH)\nEN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\nEN_LEFT_PWM.ChangeDutyCycle(vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(vitess)\n# move forward\ngpio.output(PINS.IN1, gpio.HIGH)",
-        "detail": "WS_RemoteControl.ws_app.forward",
-        "documentation": {}
-    },
-    {
-        "label": "EN_LEFT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.forward",
-        "description": "WS_RemoteControl.ws_app.forward",
-        "peekOfCode": "EN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\nEN_LEFT_PWM.ChangeDutyCycle(vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(vitess)\n# move forward\ngpio.output(PINS.IN1, gpio.HIGH)\ngpio.output(PINS.IN2, gpio.LOW)\ngpio.output(PINS.IN3, gpio.HIGH)\ngpio.output(PINS.IN4, gpio.LOW)\nsleep(1)",
-        "detail": "WS_RemoteControl.ws_app.forward",
-        "documentation": {}
-    },
-    {
-        "label": "PINS",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.left",
-        "description": "WS_RemoteControl.ws_app.left",
-        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\n# setup GPIO\nprint(\"execute left.py with args %s \"%(vitess))\ngpio.setmode(gpio.BCM)\ngpio.setwarnings(False)\ngpio.setup(PINS.IN1, gpio.OUT)\ngpio.setup(PINS.IN2, gpio.OUT)\ngpio.setup(PINS.IN3, gpio.OUT)\ngpio.setup(PINS.IN4, gpio.OUT)",
-        "detail": "WS_RemoteControl.ws_app.left",
-        "documentation": {}
-    },
-    {
-        "label": "EN_RIGHT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.left",
-        "description": "WS_RemoteControl.ws_app.left",
-        "peekOfCode": "EN_RIGHT_PWM = gpio.PWM(PINS.EN_RIGHT, 100)\n# ici, rapport_cyclique vaut entre 0.0 et 100.0\nEN_RIGHT_PWM.start(0)\n# gpio.output(PINS.EN_RIGHT, gpio.HIGH)\nEN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\n# turn left\nEN_LEFT_PWM.ChangeDutyCycle(100-vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(vitess)\ngpio.output(PINS.IN1, gpio.HIGH)",
-        "detail": "WS_RemoteControl.ws_app.left",
-        "documentation": {}
-    },
-    {
-        "label": "EN_LEFT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.left",
-        "description": "WS_RemoteControl.ws_app.left",
-        "peekOfCode": "EN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\n# turn left\nEN_LEFT_PWM.ChangeDutyCycle(100-vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(vitess)\ngpio.output(PINS.IN1, gpio.HIGH)\ngpio.output(PINS.IN2, gpio.LOW)\ngpio.output(PINS.IN3, gpio.HIGH)\ngpio.output(PINS.IN4, gpio.LOW)",
-        "detail": "WS_RemoteControl.ws_app.left",
-        "documentation": {}
-    },
-    {
-        "label": "PINS",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.right",
-        "description": "WS_RemoteControl.ws_app.right",
-        "peekOfCode": "PINS = PINS()\nvitess=int(sys.argv[1])\n# setup GPIO\nprint(\"execute right.py with args %s \"%(vitess))\ngpio.setmode(gpio.BCM)\ngpio.setwarnings(False)\ngpio.setup(PINS.IN1, gpio.OUT)\ngpio.setup(PINS.IN2, gpio.OUT)\ngpio.setup(PINS.IN3, gpio.OUT)\ngpio.setup(PINS.IN4, gpio.OUT)",
-        "detail": "WS_RemoteControl.ws_app.right",
-        "documentation": {}
-    },
-    {
-        "label": "EN_RIGHT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.right",
-        "description": "WS_RemoteControl.ws_app.right",
-        "peekOfCode": "EN_RIGHT_PWM = gpio.PWM(PINS.EN_RIGHT, 100)\n# ici, rapport_cyclique vaut entre 0.0 et 100.0\nEN_RIGHT_PWM.start(0)\n# gpio.output(PINS.EN_RIGHT, gpio.HIGH)\nEN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\n# turn right\nEN_LEFT_PWM.ChangeDutyCycle(vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(100-vitess)\ngpio.output(PINS.IN1, gpio.HIGH)",
-        "detail": "WS_RemoteControl.ws_app.right",
-        "documentation": {}
-    },
-    {
-        "label": "EN_LEFT_PWM",
-        "kind": 5,
-        "importPath": "WS_RemoteControl.ws_app.right",
-        "description": "WS_RemoteControl.ws_app.right",
-        "peekOfCode": "EN_LEFT_PWM = gpio.PWM(PINS.EN_LEFT, 100)\nEN_LEFT_PWM.start(0)\n# turn right\nEN_LEFT_PWM.ChangeDutyCycle(vitess)\nEN_RIGHT_PWM.ChangeDutyCycle(100-vitess)\ngpio.output(PINS.IN1, gpio.HIGH)\ngpio.output(PINS.IN2, gpio.LOW)\ngpio.output(PINS.IN3, gpio.HIGH)\ngpio.output(PINS.IN4, gpio.LOW)",
-        "detail": "WS_RemoteControl.ws_app.right",
         "documentation": {}
     },
     {
