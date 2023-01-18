@@ -74,53 +74,42 @@ class CommandConsumer(AsyncWebsocketConsumer):
     async def handelCommand(self, command, vitess=100, exec=False):
         print('commande %s' % str(command))
         if str(command) == self.DECISION.FORWARD and not exec:
-            self.forward(vitess=vitess)
+            # TODO add the  ChangeDutyCycle to vitess-->DONE
+            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
+            gpio.output(self.PINS.IN1, gpio.HIGH)
+            gpio.output(self.PINS.IN2, gpio.LOW)
+            gpio.output(self.PINS.IN3, gpio.HIGH)
+            gpio.output(self.PINS.IN4, gpio.LOW)
+            await asyncio.sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.BACKWARD and not exec:
-            self.backward(vitess=vitess)
+            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
+            gpio.output(self.PINS.IN1, gpio.LOW)
+            gpio.output(self.PINS.IN2, gpio.HIGH)
+            gpio.output(self.PINS.IN3, gpio.LOW)
+            gpio.output(self.PINS.IN4, gpio.HIGH)
+            await asyncio.sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.LEFT and not exec:
-            self.turn_left(vitess=vitess)
+            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(80)
+            gpio.output(self.PINS.IN1, gpio.HIGH)
+            gpio.output(self.PINS.IN2, gpio.LOW)
+            gpio.output(self.PINS.IN3, gpio.HIGH)
+            gpio.output(self.PINS.IN4, gpio.LOW)
+            await asyncio.sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.RIGHT and not exec:
-            self.turn_right(vitess=vitess)
+            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(80)
+            gpio.output(self.PINS.IN1, gpio.HIGH)
+            gpio.output(self.PINS.IN2, gpio.LOW)
+            gpio.output(self.PINS.IN3, gpio.HIGH)
+            gpio.output(self.PINS.IN4, gpio.LOW)
+            await asyncio.sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.IDLE and not exec:
             self.stop()
         ###############################################
 
-    def forward(self, vitess: int):
-        # TODO add the  ChangeDutyCycle to vitess-->DONE
-        self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
-        self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
-        gpio.output(self.PINS.IN1, gpio.HIGH)
-        gpio.output(self.PINS.IN2, gpio.LOW)
-        gpio.output(self.PINS.IN3, gpio.HIGH)
-        gpio.output(self.PINS.IN4, gpio.LOW)
-        asyncio.sleep(self.SLEEP_TIME)
-
-    def backward(self, vitess: int):
-        self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
-        self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
-        gpio.output(self.PINS.IN1, gpio.LOW)
-        gpio.output(self.PINS.IN2, gpio.HIGH)
-        gpio.output(self.PINS.IN3, gpio.LOW)
-        gpio.output(self.PINS.IN4, gpio.HIGH)
-        asyncio.sleep(self.SLEEP_TIME)
-
-    def turn_right(self, vitess: int):
-        self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
-        self.EN_RIGHT_PWM.ChangeDutyCycle(80)
-        gpio.output(self.PINS.IN1, gpio.HIGH)
-        gpio.output(self.PINS.IN2, gpio.LOW)
-        gpio.output(self.PINS.IN3, gpio.HIGH)
-        gpio.output(self.PINS.IN4, gpio.LOW)
-        asyncio.sleep(self.SLEEP_TIME)
-
-    def turn_left(self, vitess: int):
-        self.EN_LEFT_PWM.ChangeDutyCycle(80)
-        self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
-        gpio.output(self.PINS.IN1, gpio.HIGH)
-        gpio.output(self.PINS.IN2, gpio.LOW)
-        gpio.output(self.PINS.IN3, gpio.HIGH)
-        gpio.output(self.PINS.IN4, gpio.LOW)
-        asyncio.sleep(self.SLEEP_TIME)
 
     def stop(self):
         self.EN_LEFT_PWM.ChangeDutyCycle(0)
