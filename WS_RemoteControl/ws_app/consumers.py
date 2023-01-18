@@ -137,6 +137,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print('text_data_json, ',text_data_json) 
         vitess = 0
         if "decision" in text_data_json:
             decision = text_data_json['decision']
