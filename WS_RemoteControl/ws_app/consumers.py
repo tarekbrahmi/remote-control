@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 import RPi.GPIO as gpio
-import asyncio
+from time import sleep
 
 class PINS:
     ######## PINS ########
@@ -81,7 +81,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
             gpio.output(self.PINS.IN2, gpio.LOW)
             gpio.output(self.PINS.IN3, gpio.HIGH)
             gpio.output(self.PINS.IN4, gpio.LOW)
-            await asyncio.sleep(self.SLEEP_TIME)
+            sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.BACKWARD and not exec:
             self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
             self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
@@ -89,7 +89,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
             gpio.output(self.PINS.IN2, gpio.HIGH)
             gpio.output(self.PINS.IN3, gpio.LOW)
             gpio.output(self.PINS.IN4, gpio.HIGH)
-            await asyncio.sleep(self.SLEEP_TIME)
+            sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.LEFT and not exec:
             self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
             self.EN_RIGHT_PWM.ChangeDutyCycle(80)
@@ -97,7 +97,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
             gpio.output(self.PINS.IN2, gpio.LOW)
             gpio.output(self.PINS.IN3, gpio.HIGH)
             gpio.output(self.PINS.IN4, gpio.LOW)
-            await asyncio.sleep(self.SLEEP_TIME)
+            sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.RIGHT and not exec:
             self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
             self.EN_RIGHT_PWM.ChangeDutyCycle(80)
@@ -105,7 +105,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
             gpio.output(self.PINS.IN2, gpio.LOW)
             gpio.output(self.PINS.IN3, gpio.HIGH)
             gpio.output(self.PINS.IN4, gpio.LOW)
-            await asyncio.sleep(self.SLEEP_TIME)
+            sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.IDLE and not exec:
             self.stop()
         ###############################################

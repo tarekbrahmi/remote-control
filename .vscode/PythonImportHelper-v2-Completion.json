@@ -34,12 +34,27 @@
         "documentation": {}
     },
     {
-        "label": "asyncio",
-        "kind": 6,
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
         "isExtraImport": true,
-        "importPath": "asyncio",
-        "description": "asyncio",
-        "detail": "asyncio",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
+        "isExtraImport": true,
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
+        "isExtraImport": true,
+        "detail": "time",
         "documentation": {}
     },
     {
@@ -157,22 +172,6 @@
         "importPath": "pygame",
         "description": "pygame",
         "detail": "pygame",
-        "documentation": {}
-    },
-    {
-        "label": "sleep",
-        "importPath": "time",
-        "description": "time",
-        "isExtraImport": true,
-        "detail": "time",
-        "documentation": {}
-    },
-    {
-        "label": "sleep",
-        "importPath": "time",
-        "description": "time",
-        "isExtraImport": true,
-        "detail": "time",
         "documentation": {}
     },
     {
