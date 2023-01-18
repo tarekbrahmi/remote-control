@@ -29,7 +29,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
     # decisions
     DECISION = DECISION
     PINS = PINS
-    SLEEP_TIME = 1
+    SLEEP_TIME = .7
 
     def clean():
         gpio.cleanup()
@@ -70,17 +70,18 @@ class CommandConsumer(AsyncWebsocketConsumer):
                 'data': event['data']
             }))
 
-    async def handelCommand(self, command, vitess=0, exec=False):
-        # if str(command) == self.DECISION.FORWARD and not exec:
-        #     self.forward(vitess=vitess)
-        # if str(command) == self.DECISION.BACKWARD and not exec:
-        #     self.backward(vitess=vitess)
-        # if str(command) == self.DECISION.LEFT and not exec:
-        #     self.turn_left(vitess=vitess)
-        # if str(command) == self.DECISION.RIGHT and not exec:
-        #     self.turn_right(vitess=vitess)
-        # if str(command) == self.DECISION.IDLE and not exec:
-        #     self.stop()
+    async def handelCommand(self, command, vitess=100, exec=False):
+        print('commande %s'%str(command))
+        if str(command) == self.DECISION.FORWARD and not exec:
+            self.forward(vitess=vitess)
+        if str(command) == self.DECISION.BACKWARD and not exec:
+            self.backward(vitess=vitess)
+        if str(command) == self.DECISION.LEFT and not exec:
+            self.turn_left(vitess=vitess)
+        if str(command) == self.DECISION.RIGHT and not exec:
+            self.turn_right(vitess=vitess)
+        if str(command) == self.DECISION.IDLE and not exec:
+            self.stop()
         ###############################################
         # TODO add argument vitess for command
         if str(command) == self.DECISION.FORWARD and exec:
@@ -186,7 +187,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
         if "decision" in text_data_json:
             decision = text_data_json['decision']
             if decision == self.DECISION.IDLE:
-                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess,exec=True)
+                await self.handelCommand(command=self.DECISION.IDLE, vitess=vitess,exec=False)
             else:
                 vitess = int(text_data_json['vitess'])
-                await self.handelCommand(command=decision, vitess=vitess,exec=True)
+                await self.handelCommand(command=decision, vitess=vitess,exec=False)

@@ -37,11 +37,11 @@ gpio.output(PINS.IN2, gpio.LOW)
 gpio.output(PINS.IN3, gpio.HIGH)
 gpio.output(PINS.IN4, gpio.LOW)
 
-sleep(.1)
+sleep(1)
 #stop
-gpio.output(PINS.IN1, gpio.LOW)
-gpio.output(PINS.IN2, gpio.LOW)
-gpio.output(PINS.IN3, gpio.LOW)
-gpio.output(PINS.IN4, gpio.LOW)
+#gpio.output(PINS.IN1, gpio.LOW)
+#gpio.output(PINS.IN2, gpio.LOW)
+#gpio.output(PINS.IN3, gpio.LOW)
+#gpio.output(PINS.IN4, gpio.LOW)
 
 
