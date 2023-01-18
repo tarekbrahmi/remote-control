@@ -1,10 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from time import sleep
 import RPi.GPIO as gpio
-import subprocess
-import os
-
+import asyncio
 
 class PINS:
     ######## PINS ########
@@ -88,7 +85,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
             self.stop()
         ###############################################
 
-    def forward(self, vitess: int):
+    async def forward(self, vitess: int):
         # TODO add the  ChangeDutyCycle to vitess-->DONE
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
         self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
@@ -96,34 +93,34 @@ class CommandConsumer(AsyncWebsocketConsumer):
         gpio.output(self.PINS.IN2, gpio.LOW)
         gpio.output(self.PINS.IN3, gpio.HIGH)
         gpio.output(self.PINS.IN4, gpio.LOW)
-        sleep(self.SLEEP_TIME)
+        await asyncio.sleep(self.SLEEP_TIME)
 
-    def backward(self, vitess: int):
+    async def backward(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
         self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, gpio.LOW)
         gpio.output(self.PINS.IN2, gpio.HIGH)
         gpio.output(self.PINS.IN3, gpio.LOW)
         gpio.output(self.PINS.IN4, gpio.HIGH)
-        sleep(self.SLEEP_TIME)
+        await asyncio.sleep(self.SLEEP_TIME)
 
-    def turn_right(self, vitess: int):
+    async def turn_right(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
         self.EN_RIGHT_PWM.ChangeDutyCycle(80)
         gpio.output(self.PINS.IN1, gpio.HIGH)
         gpio.output(self.PINS.IN2, gpio.LOW)
         gpio.output(self.PINS.IN3, gpio.HIGH)
         gpio.output(self.PINS.IN4, gpio.LOW)
-        sleep(self.SLEEP_TIME)
+        await asyncio.sleep(self.SLEEP_TIME)
 
-    def turn_left(self, vitess: int):
+    async def turn_left(self, vitess: int):
         self.EN_LEFT_PWM.ChangeDutyCycle(80)
         self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
         gpio.output(self.PINS.IN1, gpio.HIGH)
         gpio.output(self.PINS.IN2, gpio.LOW)
         gpio.output(self.PINS.IN3, gpio.HIGH)
         gpio.output(self.PINS.IN4, gpio.LOW)
-        sleep(self.SLEEP_TIME)
+        await asyncio.sleep(self.SLEEP_TIME)
 
     def stop(self):
         self.EN_LEFT_PWM.ChangeDutyCycle(0)
