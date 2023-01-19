@@ -1,9 +1,26 @@
 import cv2
-webcam = cv2.VideoCapture()
 
+# Open the camera
+cap = cv2.VideoCapture(0)
+
+# Check if the camera is opened
+if not cap.isOpened():
+    print("Error opening camera")
+    exit()
+
+# Capture video frames
 while True:
-    (_, im) = webcam.read()
-    cv2.imshow('OK cam', im)
-    key = cv2.waitKey(0)
-    if key == 27:
+    ret, frame = cap.read()
+
+    # Display the frames
+    cv2.imshow("Camera", frame)
+
+    # Exit if 'q' is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+# Release the camera
+cap.release()
+
+# Close all windows
+cv2.destroyAllWindows()
