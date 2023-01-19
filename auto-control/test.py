@@ -1,7 +1,7 @@
 import cv2
 
 # Open the camera
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("/dev/bus/usb/001/007")
 
 # Check if the camera is opened
 if not cap.isOpened():
