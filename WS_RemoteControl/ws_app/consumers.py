@@ -75,23 +75,23 @@ class CommandConsumer(AsyncWebsocketConsumer):
         print('commande %s' % str(command))
         if str(command) == self.DECISION.FORWARD and not exec:
             # TODO add the  ChangeDutyCycle to vitess-->DONE
-            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
-            self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
+            self.EN_LEFT_PWM.ChangeDutyCycle(100)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(100)
             gpio.output(self.PINS.IN1, gpio.HIGH)
             gpio.output(self.PINS.IN2, gpio.LOW)
             gpio.output(self.PINS.IN3, gpio.HIGH)
             gpio.output(self.PINS.IN4, gpio.LOW)
             sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.BACKWARD and not exec:
-            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
-            self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
+            self.EN_LEFT_PWM.ChangeDutyCycle(100)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(100)
             gpio.output(self.PINS.IN1, gpio.LOW)
             gpio.output(self.PINS.IN2, gpio.HIGH)
             gpio.output(self.PINS.IN3, gpio.LOW)
             gpio.output(self.PINS.IN4, gpio.HIGH)
             sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.LEFT and not exec:
-            self.EN_LEFT_PWM.ChangeDutyCycle(vitess)
+            self.EN_LEFT_PWM.ChangeDutyCycle(100)
             self.EN_RIGHT_PWM.ChangeDutyCycle(80)
             gpio.output(self.PINS.IN1, gpio.HIGH)
             gpio.output(self.PINS.IN2, gpio.LOW)
@@ -100,7 +100,7 @@ class CommandConsumer(AsyncWebsocketConsumer):
             sleep(self.SLEEP_TIME)
         if str(command) == self.DECISION.RIGHT and not exec:
             self.EN_LEFT_PWM.ChangeDutyCycle(80)
-            self.EN_RIGHT_PWM.ChangeDutyCycle(vitess)
+            self.EN_RIGHT_PWM.ChangeDutyCycle(100)
             gpio.output(self.PINS.IN1, gpio.LOW)
             gpio.output(self.PINS.IN2, gpio.HIGH)
             gpio.output(self.PINS.IN3, gpio.HIGH)
